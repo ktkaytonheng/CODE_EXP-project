@@ -2,7 +2,7 @@ import * as React from "react";
 import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "./screens/HomeScreen";
+import LoginScreen from "./screens/LoginScreen";
 import EventsScreen from "./screens/EventsScreen";
 import ContactsScreen from "./screens/ContactsScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -35,7 +35,7 @@ export default function App() {
           inactiveTintColor: "gray",
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Login" component={LoginScreen} />
         <Tab.Screen name="Events" component={EventsScreen} />
         <Tab.Screen name="Contacts" component={ContactsScreen} />
       </Tab.Navigator>
