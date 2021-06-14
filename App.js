@@ -1,15 +1,15 @@
 import * as React from "react";
-import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./screens/HomeScreen";
 import GroupBuyScreen from "./screens/GroupBuyScreen";
+
+import { createStackNavigator } from "@react-navigation/stack";
 import ListingScreen from "./screens/ListingScreen";
 import AddScreen from "./screens/AddScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-
 const Tab = createBottomTabNavigator();
-
+const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
