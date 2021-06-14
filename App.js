@@ -3,8 +3,9 @@ import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./screens/HomeScreen";
-import EventsScreen from "./screens/EventsScreen";
-import ContactsScreen from "./screens/ContactsScreen";
+import GroupBuyScreen from "./screens/GroupBuyScreen";
+import ListingScreen from "./screens/ListingScreen";
+import AddScreen from "./screens/AddScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const Tab = createBottomTabNavigator();
@@ -20,10 +21,12 @@ export default function App() {
             //Set the icon based on which route it is (name of the tab)
             if (route.name === "Home") {
               iconName = "home";
-            } else if (route.name === "Events") {
+            } else if (route.name === "Group buy") {
+              iconName = "credit-card";
+            } else if (route.name === "Listing") {
               iconName = "list";
-            } else if (route.name === "Contacts") {
-              iconName = focused ? "user" : "user-o";
+            } else if (route.name === "Add place") {
+              iconName = "plus-circle";
             }
 
             // You can return any component that you like here!
@@ -36,8 +39,9 @@ export default function App() {
         }}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Events" component={EventsScreen} />
-        <Tab.Screen name="Contacts" component={ContactsScreen} />
+        <Tab.Screen name="Group buy" component={GroupBuyScreen} />
+        <Tab.Screen name="Listing" component={ListingScreen} />
+        <Tab.Screen name="Add place" component={AddScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
