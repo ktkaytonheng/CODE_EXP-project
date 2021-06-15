@@ -2,11 +2,29 @@ import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Image, TextInput,TouchableOpacity } from "react-native";
 import firebase from "../database/firebaseDB";
 
+
 export default function AddListScreen({ route }) {
   const { id, shopName, shopMenu, shopLocation} = route.params;
-  //const { id, shopName, shopMenu, shopLocation} = {id:"1",shopName: "hello", shopMenu: "https://i.redd.it/s0ffeqlnq9361.jpg", shopLocation: "lol"};
   const [paxes, setPax] = useState("");
-  const [timing, setTime] = useState("");
+  const [timing, setTime] = useState(""); 
+
+  function increment() {
+    if (!timing.trim()) {
+      alert('Please Enter Time');
+      return;
+    }
+    if (!paxes.trim()) {
+      alert('Please Enter Pax');
+      return;
+    }
+    firebase.firestore().collection("test").add({
+      pax: paxes,
+      picker: "currentUser",
+      shopID: id,
+      time: timing,
+    });
+    alert('Success');
+  }
 
   return (
     <View style={styles.container}>
@@ -16,50 +34,28 @@ export default function AddListScreen({ route }) {
         <Text style={{fontSize: 20}}>Add List</Text>
         <TextInput 
           style={styles.textArea} 
-          placeholder='Time' 
-          multiline="true"
+          placeholder={'Pax'}
+          multiline={true}
           onChangeText={
             (value) => setPax(value)
-          }
-        />
-        {/*<NumericInput min={0} max={100} value={50}/>*/}
+          }/>
         <TextInput 
           style={styles.textArea} 
-          placeholder='Pax' 
-          multiline="true"
+          placeholder={'Time'} 
+          multiline={true}
           onChangeText={
             (value) => setTime(value)
-          }
-        />
+          }/>
         <TextInput 
           style={styles.textArea}  
           value={shopLocation}
           numberOfLines={4}
-          multiline="true"
-        />
-        <TouchableOpacity style={styles.submit} onPress={
-          () => {
-            if (!timing.trim()) {
-              alert('Please Enter Time');
-              return;
-            }
-            if (!paxes.trim()) {
-              alert('Please Enter Pax');
-              return;
-            }
-            //Checked Successfully
-            firebase.firestore().collection("test").add({
-              pax: paxes,
-              picker: "currentUser",
-              shopID: id,
-              time: timing,
-            });
-            alert('Success');
-          }}>
-          Submit
+          multiline={true}/>
+        <TouchableOpacity style={styles.submit} onPress={increment}>
+          <Text style={styles.button}>Submit</Text>
         </TouchableOpacity>
       </View>
-  </View>
+    </View>
   );
 }
 
@@ -97,4 +93,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     textAlign: "center",
   },
+  button: {
+    textAlign: "center",
+    color: "white",
+  }
 });

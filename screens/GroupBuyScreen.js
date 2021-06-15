@@ -5,11 +5,11 @@ import {
   View,
   TouchableOpacity,
   FlatList,
-  Image,
+  ImageBackground,
 } from "react-native";
 import { Layout, Section, SectionContent } from "react-native-rapi-ui";
 import { Button } from "react-native-rapi-ui";
-
+import { FlatGrid } from 'react-native-super-grid';
 import AddGroupBuy from "./AddGroupBuy";
 import { createStackNavigator } from "@react-navigation/stack";
 import ViewOrdersScreen from "./ViewOrdersScreen";
@@ -39,60 +39,49 @@ function GroupBuyScreen({ navigation }) {
   // The function to render each row in our FlatList
   function renderItem({ item }) {
     return (
-      <View
-        style={{
-          padding: 10,
-          paddingTop: 20,
-          paddingBottom: 20,
-          borderBottomColor: "#ccc",
-          borderBottomWidth: 1,
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        <Text>{item.shopLocation}</Text>
-        <Image source={{ uri: item.shopMenu }} style={styles.listImage} />
-        <TouchableOpacity onPress={() => deleteNote(item.id)}>
-          <Ionicons name="trash" size={16} color="#944" />
-        </TouchableOpacity>
-        <Layout>
-          <Section>
-            <SectionContent>
-              {/* need to change to image */}
-              <View style={styles.button}>
-                <Button
-                  text="Order Group buy "
-                  onPress={() =>
-                    navigation.navigate("AddGroupBuy", {
-                      newShopName: item.shopName,
-                    })
-                  }
-                  size="lg"
-                />
-              </View>
-              <View style={styles.button}>
-                <Button
-                  text="View Last orders "
-                  onPress={() => navigation.navigate("ViewOrdersScreen")}
-                  size="lg"
-                />
-              </View>
-            </SectionContent>
-          </Section>
-        </Layout>
+      <View style={styles.itemContainer}>
+        <Text style={{textAlign: "center"}}>{item.shopName}</Text>
+        <View style={styles.container}>
+          <ImageBackground source={{ uri: item.shopMenu }} style={styles.image}>
+            <TouchableOpacity 
+              style={styles.icon} 
+              onPress={() => deleteNote(item.id)}>
+              <Ionicons name="trash" size={20} color="#8B0000"/>
+            </TouchableOpacity>
+            <View style={styles.body}>
+              <TouchableOpacity
+                style={styles.button}
+                text="Order Group buy "
+                onPress={() =>
+                  navigation.navigate("AddGroupBuy", {
+                    newShopName: item.shopName,
+                  })}
+              >
+                <Text style={styles.text}>Order Group buy</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate("ViewOrdersScreen")}>
+                <Text style={styles.text}>View Last orders</Text>
+              </TouchableOpacity>
+          </View>
+          </ImageBackground>
+        </View>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <FlatList
+    <FlatGrid
+        itemDimension={"2"}
         data={shopInfo}
+        style={styles.gridView}
+        // staticDimension={300}
+        // fixed
+        spacing={10}
         renderItem={renderItem}
-        style={{ width: "100%" }}
-        keyExtractor={(item) => item.id.toString()}
+        // keyExtractor={(item) => item.id.toString()}
       />
-    </View>
   );
 }
 
@@ -105,7 +94,7 @@ export default function GroupBuyStack() {
         component={GroupBuyScreen}
       />
       <Stack.Screen
-        optionss={{ headerTitle: "Add Food Order" }}
+        options={{ headerTitle: "Add Food Order" }}
         name="AddGroupBuy"
         component={AddGroupBuy}
       />
@@ -121,22 +110,47 @@ export default function GroupBuyStack() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffc",
     alignItems: "center",
     justifyContent: "center",
   },
-  listImage: {
-    width: 50,
-    height: 50,
-  },
   button: {
-    padding: 20,
-    margin: 10,
+    margin: 5,
+    backgroundColor: "blue",
+    borderRadius: 10,
+    width: "50%",
+    height: "20%",
   },
-  btnText: {
+  text: {
+    fontSize: 10,
     color: "white",
-    fontSize: 20,
     justifyContent: "center",
     textAlign: "center",
+    borderWidth: 2,
+  },
+  body: {
+    marginTop: 30,
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  gridView: {
+    marginTop: 10,
+    flex: 1,
+  },
+  itemContainer: {
+    justifyContent: 'flex-end',
+    borderRadius: 5,
+    padding: 10,
+    height: 200,
+  },
+  image: {
+    flex: 1,
+    width: '100%',
+    resizeMode: "cover",
+    justifyContent: "center"
+  },
+  icon: {
+    alignSelf: 'flex-end',
+    marginTop: -5,
   },
 });
