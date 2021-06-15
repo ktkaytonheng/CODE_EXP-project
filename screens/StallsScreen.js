@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Text, TouchableOpacity, ImageBackground, Button } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 import AddListScreen from './AddListScreen';
 import EditListDetailScreen from "./EditListDetailScreen";
 
@@ -38,7 +36,7 @@ function StallsScreen({ navigation }) {
     return (
       <TouchableOpacity
           onPress={() => {
-          navigation.navigate('Add List', { ...item });
+          navigation.navigate("Add List", { ...item });
         }}>
             <View style={[styles.itemContainer]}>
             <ImageBackground source={{ uri: item.shopMenu }} style={styles.image}>
