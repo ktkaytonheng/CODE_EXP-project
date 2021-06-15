@@ -50,7 +50,6 @@ function GroupBuyScreen({ navigation }) {
           justifyContent: "space-between",
         }}
       >
-        <Text>{item.shopName}</Text>
         <Text>{item.shopLocation}</Text>
         <Image source={{ uri: item.shopMenu }} style={styles.listImage} />
         <TouchableOpacity onPress={() => deleteNote(item.id)}>
@@ -63,7 +62,11 @@ function GroupBuyScreen({ navigation }) {
               <View style={styles.button}>
                 <Button
                   text="Order Group buy "
-                  onPress={() => navigation.navigate("AddGroupBuy")}
+                  onPress={() =>
+                    navigation.navigate("AddGroupBuy", {
+                      newShopName: item.shopName,
+                    })
+                  }
                   size="lg"
                 />
               </View>
@@ -96,9 +99,21 @@ function GroupBuyScreen({ navigation }) {
 export default function GroupBuyStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="GroupBuyScreen" component={GroupBuyScreen} />
-      <Stack.Screen name="AddGroupBuy" component={AddGroupBuy} />
-      <Stack.Screen name="ViewOrdersScreen" component={ViewOrdersScreen} />
+      <Stack.Screen
+        options={{ headerTitle: "Join a Group Buy" }}
+        name="GroupBuyScreen"
+        component={GroupBuyScreen}
+      />
+      <Stack.Screen
+        optionss={{ headerTitle: "Add Food Order" }}
+        name="AddGroupBuy"
+        component={AddGroupBuy}
+      />
+      <Stack.Screen
+        options={{ headerTitle: "View Current Orders" }}
+        name="ViewOrdersScreen"
+        component={ViewOrdersScreen}
+      />
     </Stack.Navigator>
   );
 }
