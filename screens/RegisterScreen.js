@@ -14,13 +14,14 @@ const firestore = firebase.firestore();
 export default function RegisterScreen() {
   const [initializing, setInitializing] = useState(false);
   const [user, setUser] = useState();
+  const [fullname, setFullname] = useState({ value: "", error: "" });
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const [confPassword, setConfPassword] = useState({ value: "", error: "" });
   const [errorText, setErrorText] = useState(" ");
   let history = useHistory();
 
-  function Register(email, password, confPassword) {
+  function Register(fullname, email, password, confPassword) {
     if (password != confPassword) {
       setErrorText("Passwords do not match");
       return;
@@ -42,11 +43,11 @@ export default function RegisterScreen() {
           return;
       }
     });
-    // firestore()
-    //   .collection('Users')
-    //   .add({
-
-    //   })
+    firestore.collection("Users").add({
+      name: fullname,
+      email: email,
+      picture: "../assets/defaultdp.png",
+    });
   }
 
   useEffect(() => {
@@ -69,6 +70,13 @@ export default function RegisterScreen() {
       <Image
         style={styles.titleLogo}
         source={require("../assets/FHlogo.png")}
+      />
+      <TextInput
+        label="Full Name"
+        returnKeyType="next"
+        value={fullname.value}
+        onChangeText={(text) => setFullname({ value: text, error: "" })}
+        autoCapitalize="none"
       />
       <TextInput
         label="Email"
@@ -98,7 +106,12 @@ export default function RegisterScreen() {
       <Button
         mode="contained"
         onPress={() =>
-          Register(email.value, password.value, confPassword.value)
+          Register(
+            fullname.value,
+            email.value,
+            password.value,
+            confPassword.value
+          )
         }
       >
         Register
