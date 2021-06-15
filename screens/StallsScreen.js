@@ -34,17 +34,19 @@ function StallsScreen({ navigation }) {
 
   function renderItem({ item }) {
     return (
-      <TouchableOpacity
-          onPress={() => {
-          navigation.navigate("Add List", { ...item });
-        }}>
-            <View style={[styles.itemContainer]}>
-            <ImageBackground source={{ uri: item.shopMenu }} style={styles.image}>
-              <Text style={styles.itemName}>{item.shopName}</Text>
-              <Text style={styles.itemCode}>{item.shopLocation}</Text>
-            </ImageBackground>
-            </View>
-          </TouchableOpacity>
+      <View>
+        <Text style={styles.itemName}>{item.shopName}</Text>
+        <TouchableOpacity
+            onPress={() => {
+            navigation.navigate("Add List", { ...item });
+          }}>
+              <View style={[styles.itemContainer]}>
+              <ImageBackground source={{ uri: item.shopMenu }} style={styles.image}>
+                <Text style={styles.itemCode}>{item.shopLocation}</Text>
+              </ImageBackground>
+              </View>
+        </TouchableOpacity>
+      </View>
     );
   }
 
@@ -81,13 +83,15 @@ const styles = StyleSheet.create({
   itemContainer: {
     justifyContent: 'flex-end',
     borderRadius: 5,
-    padding: 10,
+    padding: 5,
     height: 150,
   },
   itemName: {
-    fontSize: 16,
-    color: '#fff',
-    fontWeight: '600',
+    fontSize: 10,
+    color: 'black',
+    fontWeight: "bold",
+    justifyContent: "center",
+    textAlign: "center"
   },
   image: {
     flex: 1,
