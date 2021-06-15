@@ -8,6 +8,7 @@ export default function AddListScreen({ route }) {
   const { id, shopName, shopMenu, shopLocation} = route.params;
   const [paxes, setPax] = useState("");
   const [timing, setTime] = useState("");
+  const [date, setDate] = useState(new Date());
 
   return (
     <View style={styles.container}>
