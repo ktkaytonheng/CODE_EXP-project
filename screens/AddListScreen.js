@@ -40,12 +40,12 @@ export default function AddListScreen({ route }) {
         />
         <TouchableOpacity style={styles.submit} onPress={
           () => {
-            if (!paxes.trim()) {
-              alert('Please Enter Pax');
-              return;
-            }
             if (!timing.trim()) {
               alert('Please Enter Time');
+              return;
+            }
+            if (!paxes.trim()) {
+              alert('Please Enter Pax');
               return;
             }
             //Checked Successfully

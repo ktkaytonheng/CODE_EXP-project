@@ -32,7 +32,7 @@ function StallsScreen({ navigation }) {
     return (
       <TouchableOpacity
           onPress={() => {
-          navigation.navigate('Details', { ...item });
+          navigation.navigate('Add List', { ...item });
         }}>
             <View style={[styles.itemContainer]}>
             <ImageBackground source={{ uri: item.shopMenu }} style={styles.image}>
@@ -63,7 +63,7 @@ export default function StallsScreenStack() {
   return (
       <Stack.Navigator>
         <Stack.Screen name="StallsScreen" component={StallsScreen} />
-        <Stack.Screen name="Details" component={AddListScreen} />
+        <Stack.Screen name="Add List" component={AddListScreen} />
       </Stack.Navigator>
   );
 }
