@@ -17,7 +17,7 @@ import {
   } from "react-native";
 
 
-function NotesScreen({navigation}){
+  export default function EditListDetailScreen({navigation}){
 
     const [remarks, setRemarks] = useState([]);
 
@@ -66,68 +66,46 @@ function NotesScreen({navigation}){
     );
 }
 
-const Stack = createStackNavigator();
-
-export default function EditListDetailScreen() {
-
-    return (
-            <Stack.Navigator>
-                <Stack.Screen
-                    name= "Notes"
-                    component= {NotesScreen}
-                    options={{
-                        headerTitle : "Listing"
-                    }}
-                />
-            </Stack.Navigator>
-
-    );
-
-    
-  }
-
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#ffc",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    listImage: {
-      width: 50,
-      height: 50,
-    },
-    button: {
-      padding: 20,
-      margin: 10,
-    },
-    btnText: {
-      color: "white",
-      fontSize: 20,
-      justifyContent: "center",
-      textAlign: "center",
-    },
-    
-    customerName : {
-        fontSize : 15,
-        textAlign : "left",
-        color:"black",
-        padding:10,
-        paddingLeft:20,
-        top:1,
-    },
-
-    customerRemark : {
-        fontSize : 12,
-        textAlign : "left",
-        color:"black",
-        paddingTop: 25,
-        paddingBottom: 50,
-        paddingLeft : 120,
-        paddingRight: 10,
-        
-       
-    }
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#ffc",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  listImage: {
+    width: 50,
+    height: 50,
+  },
+  button: {
+    padding: 20,
+    margin: 10,
+  },
+  btnText: {
+    color: "white",
+    fontSize: 20,
+    justifyContent: "center",
+    textAlign: "center",
+  },
   
+  customerName : {
+      fontSize : 15,
+      textAlign : "left",
+      color:"black",
+      padding:10,
+      paddingLeft:20,
+      top:1,
+  },
+
+  customerRemark : {
+      fontSize : 12,
+      textAlign : "left",
+      color:"black",
+      paddingTop: 25,
+      paddingBottom: 50,
+      paddingLeft : 120,
+      paddingRight: 10,
+      
+      
+  }
+});
