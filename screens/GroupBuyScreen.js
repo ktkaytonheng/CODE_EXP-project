@@ -1,5 +1,12 @@
-import * as React from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  Image,
+} from "react-native";
 import { Layout, Section, SectionContent } from "react-native-rapi-ui";
 import { Button } from "react-native-rapi-ui";
 
@@ -7,32 +14,106 @@ import AddGroupBuy from "./AddGroupBuy";
 import { createStackNavigator } from "@react-navigation/stack";
 import ViewOrdersScreen from "./ViewOrdersScreen";
 const Stack = createStackNavigator();
+import { Ionicons } from "@expo/vector-icons";
+import firebase from "../database/firebaseDB";
+
+const db = firebase.firestore().collection("shopInfo");
+
 function GroupBuyScreen({ navigation }) {
+  const [shopInfo, setShopInfo] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = firebase
+      .firestore()
+      .collection("shopInfo")
+      .onSnapshot((collection) => {
+        const updatedShopInfo = collection.docs.map((doc) => doc.data());
+        setShopInfo(updatedShopInfo);
+      });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  // The function to render each row in our FlatList
+  function renderItem({ item }) {
+    return (
+      <View
+        style={{
+          padding: 10,
+          paddingTop: 20,
+          paddingBottom: 20,
+          borderBottomColor: "#ccc",
+          borderBottomWidth: 1,
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text>{item.shopName}</Text>
+        <Text>{item.shopLocation}</Text>
+        <Image source={{ uri: item.shopMenu }} style={styles.listImage} />
+        <TouchableOpacity onPress={() => deleteNote(item.id)}>
+          <Ionicons name="trash" size={16} color="#944" />
+        </TouchableOpacity>
+        <Layout>
+          <Section>
+            <SectionContent>
+              {/* need to change to image */}
+              <View style={styles.button}>
+                <Button
+                  text="Order Group buy "
+                  onPress={() => navigation.navigate("AddGroupBuy")}
+                  size="lg"
+                />
+              </View>
+              <View style={styles.button}>
+                <Button
+                  text="View Last orders "
+                  onPress={() => navigation.navigate("ViewOrdersScreen")}
+                  size="lg"
+                />
+              </View>
+            </SectionContent>
+          </Section>
+        </Layout>
+      </View>
+    );
+  }
+
   return (
-    <Layout>
-      <Section>
-        <SectionContent>
-          {/* need to change to image */}
-          <View style={styles.button}>
-            <Button
-              text="Order Group buy "
-              onPress={() => navigation.navigate("AddGroupBuy")}
-              size="lg"
-            />
-          </View>
-          <View style={styles.button}>
-            <Button
-              text="View Last orders "
-              onPress={() => navigation.navigate("ViewOrdersScreen")}
-              size="lg"
-            />
-          </View>
-        </SectionContent>
-      </Section>
-    </Layout>
+    <View style={styles.container}>
+      <FlatList
+        data={shopInfo}
+        renderItem={renderItem}
+        style={{ width: "100%" }}
+        keyExtractor={(item) => item.id.toString()}
+      />
+    </View>
   );
 }
+
+export default function GroupBuyStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="GroupBuyScreen" component={GroupBuyScreen} />
+      <Stack.Screen name="AddGroupBuy" component={AddGroupBuy} />
+      <Stack.Screen name="ViewOrdersScreen" component={ViewOrdersScreen} />
+    </Stack.Navigator>
+  );
+}
+
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#ffc",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  listImage: {
+    width: 50,
+    height: 50,
+  },
   button: {
     padding: 20,
     margin: 10,
@@ -44,12 +125,3 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-export default function GroupBuyStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="GroupBuyScreen" component={GroupBuyScreen} />
-      <Stack.Screen name="AddGroupBuy" component={AddGroupBuy} />
-      <Stack.Screen name="ViewOrdersScreen" component={ViewOrdersScreen} />
-    </Stack.Navigator>
-  );
-}
