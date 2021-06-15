@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Text, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ImageBackground, Button } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import AddListScreen from './AddListScreen';
+import EditListDetailScreen from "./EditListDetailScreen";
 
 import firebase from "../database/firebaseDB";
 
 const db = firebase.firestore().collection("shopInfo");
 
 function StallsScreen({ navigation }) {
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <Button onPress={() => navigation.navigate("My listing")} title="My listings" />,
+    });
+  });
 
   const [shopInfo, setShopInfo] = React.useState([]);
 
@@ -64,6 +70,7 @@ export default function StallsScreenStack() {
       <Stack.Navigator>
         <Stack.Screen name="StallsScreen" component={StallsScreen} />
         <Stack.Screen name="Add List" component={AddListScreen} />
+        <Stack.Screen name="My listing" component={EditListDetailScreen} />
       </Stack.Navigator>
   );
 }
