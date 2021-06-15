@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Image, TextInput,TouchableOpacity } from "react-native";
 import * as NumericInput from "react-numeric-input";
+import firebase from "../database/firebaseDB";
 
 export default function AddListScreen({ route }) {
   console.log(route.params);
-  const { shopName, shopMenu, shopLocation} = route.params;
+  const { id, shopName, shopMenu, shopLocation} = route.params;
+  const [paxes, setPax] = useState("");
+  const [timing, setTime] = useState("");
 
   return (
     <View style={styles.container}>
@@ -12,16 +15,48 @@ export default function AddListScreen({ route }) {
       <View style={{alignItems:"center", justifyContent: 'center'}}>
         <Image style={styles.image} source={{uri: shopMenu}}/>
         <Text style={{fontSize: 20}}>Add List</Text>
-        <TextInput style={styles.textArea} placeholder='Time' multiline="true"/>
+        <TextInput 
+          style={styles.textArea} 
+          placeholder='Time' 
+          multiline="true"
+          onChangeText={
+            (value) => setPax(value)
+          }
+        />
         {/*<NumericInput min={0} max={100} value={50}/>*/}
-        <TextInput style={styles.textArea} placeholder='Pax' multiline="true"/>
+        <TextInput 
+          style={styles.textArea} 
+          placeholder='Pax' 
+          multiline="true"
+          onChangeText={
+            (value) => setTime(value)
+          }
+        />
         <TextInput 
           style={styles.textArea}  
           value={shopLocation}
           numberOfLines={4}
           multiline="true"
         />
-        <TouchableOpacity style={styles.submit} onPress={console.log("hello")}>
+        <TouchableOpacity style={styles.submit} onPress={
+          () => {
+            if (!paxes.trim()) {
+              alert('Please Enter Pax');
+              return;
+            }
+            if (!timing.trim()) {
+              alert('Please Enter Time');
+              return;
+            }
+            //Checked Successfully
+            firebase.firestore().collection("test").add({
+              pax: paxes,
+              picker: "currentUser",
+              shopID: id,
+              time: timing,
+            });
+            alert('Success');
+          }}>
           Submit
         </TouchableOpacity>
       </View>
