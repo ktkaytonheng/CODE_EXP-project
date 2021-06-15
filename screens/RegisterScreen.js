@@ -6,7 +6,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useHistory } from "react-router-dom";
 import firebase from "../database/firebase";
 import "firebase/auth";
-import { diffClamp } from "react-native-reanimated";
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();

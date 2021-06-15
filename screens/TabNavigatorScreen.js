@@ -10,6 +10,7 @@ import GroupBuyScreen from "../screens/GroupBuyScreen";
 import ListingScreen from "../screens/ListingScreen";
 import AddScreen from "../screens/AddScreen";
 import LoginScreen from "../screens/LoginScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const Tab = createBottomTabNavigator();
@@ -31,6 +32,8 @@ export default function TabNavigatorScreen() {
               iconName = "list";
             } else if (route.name === "Add place") {
               iconName = "plus-circle";
+            } else if (route.name === "Profile") {
+              iconName = "user";
             }
 
             // You can return any component that you like here!
@@ -46,6 +49,7 @@ export default function TabNavigatorScreen() {
         <Tab.Screen name="Group buy" component={GroupBuyScreen} />
         <Tab.Screen name="Listing" component={ListingScreen} />
         <Tab.Screen name="Add place" component={AddScreen} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
