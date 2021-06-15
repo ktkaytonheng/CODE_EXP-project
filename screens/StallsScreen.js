@@ -83,8 +83,10 @@ const styles = StyleSheet.create({
   itemContainer: {
     justifyContent: 'flex-end',
     borderRadius: 5,
-    padding: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     height: 150,
+    
   },
   itemName: {
     fontSize: 10,
