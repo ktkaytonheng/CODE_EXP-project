@@ -27,8 +27,8 @@ function GroupBuyScreen({ navigation }) {
       .firestore()
       .collection("shopInfo")
       .onSnapshot((collection) => {
-        const updatedShopInfo = collection.docs.map((doc) => doc.data());
-        setShopInfo(updatedShopInfo);
+        const updatedRemarks = collection.docs.map((doc) => doc.data());
+        setShopInfo(updatedRemarks);
       });
 
     return () => {

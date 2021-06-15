@@ -8,6 +8,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ListingScreen from "./screens/ListingScreen";
 import AddScreen from "./screens/AddScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import EditListDetailScreen from "./screens/EditListDetailScreen";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 export default function App() {
@@ -40,7 +41,7 @@ export default function App() {
       >
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Group buy" component={GroupBuyScreen} />
-        <Tab.Screen name="Listing" component={ListingScreen} />
+        <Tab.Screen name="Listing" component={EditListDetailScreen} />
         <Tab.Screen name="Add place" component={AddScreen} />
       </Tab.Navigator>
     </NavigationContainer>

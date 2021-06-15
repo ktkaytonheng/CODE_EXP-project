@@ -1,6 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
+  "expoServerPort": 19000,
   "packagerPort": 19000,
-  "webpackServerPort": 19006
+  "webpackServerPort": 19006,
+  "expoServerNgrokUrl": "https://aq-4wd.masterwong.code-exp-project.exp.direct",
+  "packagerNgrokUrl": "https://packager.aq-4wd.masterwong.code-exp-project.exp.direct",
+  "ngrokPid": 18852
 }
