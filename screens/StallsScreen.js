@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import DetailsScreen from './screens/DetailsScreen';
+import AddListScreen from './screens/AddListScreen';
 
 function HomeScreen({ navigation }) {
   const [items, setItems] = React.useState([
@@ -57,12 +57,12 @@ function HomeScreen({ navigation }) {
 
 const Stack = createStackNavigator();
 
-export default function App() {
+export default function StallsScreen() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Kueh Lapis" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="Details" component={AddListScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
