@@ -16,11 +16,6 @@ import {
     TextInput,
   } from "react-native";
 
-  const SAMPLE_REMARKS = [
-    { title: "Walk the cat", id: "0"},
-    { title: "Water the cat", id: "1"},
-  ];
-
 
 function NotesScreen({navigation}){
 
@@ -80,6 +75,9 @@ export default function EditListDetailScreen() {
                 <Stack.Screen
                     name= "Notes"
                     component= {NotesScreen}
+                    options={{
+                        headerTitle : "Listing"
+                    }}
                 />
             </Stack.Navigator>
 
@@ -118,9 +116,6 @@ export default function EditListDetailScreen() {
         padding:10,
         paddingLeft:20,
         top:1,
-
-
-   
     },
 
     customerRemark : {
