@@ -1,1 +1,5 @@
-{}
+{
+  "devToolsPort": 19004,
+  "expoServerPort": 19005,
+  "packagerPort": 19005
+}
