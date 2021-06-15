@@ -1,21 +1,23 @@
 import React from "react";
 import { Text, View, StyleSheet, Image, TextInput,TouchableOpacity } from "react-native";
+import * as NumericInput from "react-numeric-input";
 
 export default function AddListScreen({ route }) {
   console.log(route.params);
-  const { shopName, shopMenu} = route.params;
+  const { shopName, shopMenu, shopLocation} = route.params;
 
   return (
     <View style={styles.container}>
-      <Text style={{margin:3, textAlign: 'center'}}>Location: {shopName}</Text>
+      <Text style={{margin:3, textAlign: 'center'}}>{shopName}</Text>
       <View style={{alignItems:"center", justifyContent: 'center'}}>
         <Image style={styles.image} source={{uri: shopMenu}}/>
         <Text style={{fontSize: 20}}>Add List</Text>
         <TextInput style={styles.textArea} placeholder='Time' multiline="true"/>
+        {/*<NumericInput min={0} max={100} value={50}/>*/}
         <TextInput style={styles.textArea} placeholder='Pax' multiline="true"/>
         <TextInput 
           style={styles.textArea}  
-          placeholder='Location' 
+          value={shopLocation}
           numberOfLines={4}
           multiline="true"
         />
