@@ -4,7 +4,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./screens/HomeScreen";
 import GroupBuyScreen from "./screens/GroupBuyScreen";
 import StallsScreen from "./screens/StallsScreen";
-
 import { createStackNavigator } from "@react-navigation/stack";
 import ListingScreen from "./screens/ListingScreen";
 import AddScreen from "./screens/AddScreen";
@@ -47,4 +46,25 @@ export default function App() {
       </Tab.Navigator>
     </NavigationContainer>
   );
+
+  function StackScreen() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            title: 'My home',
+            headerStyle: {
+              backgroundColor: '#f4511e',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+      </Stack.Navigator>
+    );
+  }
 }
