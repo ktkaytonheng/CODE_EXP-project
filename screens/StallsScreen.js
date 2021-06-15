@@ -4,9 +4,10 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import AddListScreen from './screens/AddListScreen';
+import AddListScreen from './AddListScreen';
+import firebase from "../database/firebaseDB";
 
-function HomeScreen({ navigation }) {
+function StallsScreen({ navigation }) {
   const [items, setItems] = React.useState([
     { name: 'TURQUOISE', code: '#1abc9c' },
     { name: 'EMERALD', code: '#2ecc71' },
@@ -57,14 +58,12 @@ function HomeScreen({ navigation }) {
 
 const Stack = createStackNavigator();
 
-export default function StallsScreen() {
+export default function StallsScreenStack() {
   return (
-    <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Kueh Lapis" component={HomeScreen} />
+        <Stack.Screen name="StallsScreen" component={StallsScreen} />
         <Stack.Screen name="Details" component={AddListScreen} />
       </Stack.Navigator>
-    </NavigationContainer>
   );
 }
 

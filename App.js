@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./screens/HomeScreen";
 import GroupBuyScreen from "./screens/GroupBuyScreen";
+import StallsScreen from "./screens/StallsScreen";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import ListingScreen from "./screens/ListingScreen";
@@ -38,7 +39,7 @@ export default function App() {
           inactiveTintColor: "gray",
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Home" component={StallsScreen} />
         <Tab.Screen name="Group buy" component={GroupBuyScreen} />
         <Tab.Screen name="Listing" component={ListingScreen} />
         <Tab.Screen name="Add place" component={AddScreen} />
