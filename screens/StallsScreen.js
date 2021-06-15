@@ -1,33 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import AddListScreen from './AddListScreen';
+
 import firebase from "../database/firebaseDB";
 
+const db = firebase.firestore().collection("shopInfo");
+
 function StallsScreen({ navigation }) {
-  const [items, setItems] = React.useState([
-    { name: 'TURQUOISE', code: '#1abc9c' },
-    { name: 'EMERALD', code: '#2ecc71' },
-    { name: 'PETER RIVER', code: '#3498db' },
-    { name: 'TURQUOISE', code: '#1abc9c' },
-    { name: 'EMERALD', code: '#2ecc71' },
-    { name: 'PETER RIVER', code: '#3498db' },
-    { name: 'TURQUOISE', code: '#1abc9c' },
-    { name: 'EMERALD', code: '#2ecc71' },
-    { name: 'PETER RIVER', code: '#3498db' },
-    { name: 'TURQUOISE', code: '#1abc9c' },
-    { name: 'EMERALD', code: '#2ecc71' },
-    { name: 'PETER RIVER', code: '#3498db' },
-    { name: 'TURQUOISE', code: '#1abc9c' },
-    { name: 'EMERALD', code: '#2ecc71' },
-    { name: 'PETER RIVER', code: '#3498db' },
-    { name: 'TURQUOISE', code: '#1abc9c' },
-    { name: 'EMERALD', code: '#2ecc71' },
-    { name: 'PETER RIVER', code: '#3498db' },
-  ]);
+
+  const [shopInfo, setShopInfo] = React.useState([]);
+
+  useEffect(() => {
+    const unsubscribe = firebase
+      .firestore()
+      .collection("shopInfo")
+      .onSnapshot((collection) => {
+        const updatedShopInfo = collection.docs.map((doc) => doc.data());
+        setShopInfo(updatedShopInfo);
+      });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   function renderItem({ item }) {
     return (
@@ -35,9 +34,11 @@ function StallsScreen({ navigation }) {
           onPress={() => {
           navigation.navigate('Details', { ...item });
         }}>
-            <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-              <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemCode}>{item.code}</Text>
+            <View style={[styles.itemContainer]}>
+            <ImageBackground source={{ uri: item.shopMenu }} style={styles.image}>
+              <Text style={styles.itemName}>{item.shopName}</Text>
+              <Text style={styles.itemCode}>{item.shopLocation}</Text>
+            </ImageBackground>
             </View>
           </TouchableOpacity>
     );
@@ -46,7 +47,7 @@ function StallsScreen({ navigation }) {
   return (
       <FlatGrid
         itemDimension={130}
-        data={items}
+        data={shopInfo}
         style={styles.gridView}
         // staticDimension={300}
         // fixed
@@ -82,6 +83,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#fff',
     fontWeight: '600',
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center"
   },
   itemCode: {
     fontWeight: '600',
