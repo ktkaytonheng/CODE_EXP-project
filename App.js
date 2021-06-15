@@ -1,44 +1,34 @@
-import * as React from "react";
-import { Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { StatusBar } from "expo-status-bar";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { NativeRouter, Switch, Route } from "react-router-native";
 import LoginScreen from "./screens/LoginScreen";
-import EventsScreen from "./screens/EventsScreen";
-import ContactsScreen from "./screens/ContactsScreen";
+import TabNavigatorScreen from "./screens/TabNavigatorScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import firebase from "./database/firebase";
+import "firebase/auth";
 
-const Tab = createBottomTabNavigator();
+const auth = firebase.auth();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            //Set the icon based on which route it is (name of the tab)
-            if (route.name === "Home") {
-              iconName = "home";
-            } else if (route.name === "Events") {
-              iconName = "list";
-            } else if (route.name === "Contacts") {
-              iconName = focused ? "user" : "user-o";
-            }
-
-            // You can return any component that you like here!
-            return <FontAwesome name={iconName} size={size} color={color} />;
-          },
-        })}
-        tabBarOptions={{
-          activeTintColor: "tomato",
-          inactiveTintColor: "gray",
-        }}
-      >
-        <Tab.Screen name="Login" component={LoginScreen} />
-        <Tab.Screen name="Events" component={EventsScreen} />
-        <Tab.Screen name="Contacts" component={ContactsScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <NativeRouter>
+      <Switch>
+        <Route exact path="/" component={LoginScreen} />
+        <Route exact path="/home" component={TabNavigatorScreen} />
+        <Route exact path="/register" component={RegisterScreen} />
+      </Switch>
+    </NativeRouter>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

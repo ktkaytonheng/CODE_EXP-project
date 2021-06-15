@@ -3,40 +3,50 @@ import { StyleSheet, Text, View, Image } from "react-native";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
 import { LinearGradient } from "expo-linear-gradient";
-import { Animated } from "react-native";
 import { useHistory } from "react-router-dom";
 import firebase from "../database/firebase";
 import "firebase/auth";
+import { diffClamp } from "react-native-reanimated";
 
 const auth = firebase.auth();
+const firestore = firebase.firestore();
 
-export default function LoginScreen() {
-  const [initializing, setInitializing] = useState(true);
+export default function RegisterScreen() {
+  const [initializing, setInitializing] = useState(false);
   const [user, setUser] = useState();
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
+  const [confPassword, setConfPassword] = useState({ value: "", error: "" });
   const [errorText, setErrorText] = useState(" ");
   let history = useHistory();
 
-  function SignIn(email, password) {
-    auth.signInWithEmailAndPassword(email, password).catch((error) => {
+  function Register(email, password, confPassword) {
+    if (password != confPassword) {
+      setErrorText("Passwords do not match");
+      return;
+    }
+    auth.createUserWithEmailAndPassword(email, password).catch((error) => {
       console.log(error.code);
-      console.log(error.message);
       switch (error.code) {
         case "auth/invalid-email":
-          setErrorText("Please type in an appropriate email");
-          break;
-        case "auth/user-not-found":
-          setErrorText("Email not found");
-          break;
-        case "auth/wrong-password":
-          setErrorText("Invalid password");
-          break;
+          setErrorText("Invalid email");
+          return;
+        case "auth/weak-password":
+          setErrorText("Password must be at least 6 characters");
+          return;
+        case "auth/email-already-in-use":
+          setErrorText("Email is already taken");
+          return;
         default:
-          setErrorText("Error checking credentials, please retry");
-          break;
+          setErrorText("Unable to create account, please try again");
+          return;
       }
     });
+    // firestore()
+    //   .collection('Users')
+    //   .add({
+
+    //   })
   }
 
   useEffect(() => {
@@ -47,21 +57,10 @@ export default function LoginScreen() {
         console.log("Successful login");
         history.push("/home");
       }
-      setInitializing(false);
     });
     return subscriber;
   });
 
-  // Loading screen
-  if (initializing) {
-    return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-
-  // Login screen
   return (
     <LinearGradient
       colors={["#f9c449", "#e8a49c", "#e8a49c"]}
@@ -88,15 +87,24 @@ export default function LoginScreen() {
         onChangeText={(text) => setPassword({ value: text, error: "" })}
         secureTextEntry
       />
+      <TextInput
+        label="Confirm Password"
+        returnKeyType="done"
+        value={confPassword.value}
+        onChangeText={(text) => setConfPassword({ value: text, error: "" })}
+        secureTextEntry
+      />
       <Text style={styles.errorText}>{errorText}</Text>
       <Button
         mode="contained"
-        onPress={() => SignIn(email.value, password.value)}
+        onPress={() =>
+          Register(email.value, password.value, confPassword.value)
+        }
       >
-        Login
-      </Button>
-      <Button mode="contained" onPress={() => history.push("/register")}>
         Register
+      </Button>
+      <Button mode="contained" onPress={() => history.push("/")}>
+        Back
       </Button>
     </LinearGradient>
   );
