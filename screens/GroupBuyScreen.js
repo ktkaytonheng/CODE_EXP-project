@@ -83,13 +83,12 @@ function GroupBuyScreen({ navigation }) {
             />
           </ImageBackground>
         </View>
-      
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container2}>
       <FlatGrid
         itemDimension={"2"}
         data={shopInfo}
@@ -101,23 +100,22 @@ function GroupBuyScreen({ navigation }) {
         // keyExtractor={(item) => item.id.toString()}
       />
 
-        
-<ActionButton buttonColor="#2e64e5">
-          <ActionButton.Item
-            buttonColor="#9b59b6"
-            title="View My Current Orders"
-            onPress={() => navigation.navigate("ViewOrdersScreen")}
-          >
-            <Icon name="camera-outline" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item
-            buttonColor="#3498db"
-            title="Dabao for others"
-            onPress={() => navigation.navigate("GroupBuyGroupScreen")}
-          >
-            <Icon name="md-images-outline" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-        </ActionButton>
+      <ActionButton buttonColor="#2e64e5">
+        <ActionButton.Item
+          buttonColor="#9b59b6"
+          title="View My Current Orders"
+          onPress={() => navigation.navigate("ViewOrdersScreen")}
+        >
+          <Icon name="camera-outline" style={styles.actionButtonIcon} />
+        </ActionButton.Item>
+        <ActionButton.Item
+          buttonColor="#3498db"
+          title="Dabao for others"
+          onPress={() => navigation.navigate("GroupBuyGroupScreen")}
+        >
+          <Icon name="md-images-outline" style={styles.actionButtonIcon} />
+        </ActionButton.Item>
+      </ActionButton>
     </View>
   );
 }
@@ -160,6 +158,11 @@ export default function GroupBuyStack() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  container2: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",

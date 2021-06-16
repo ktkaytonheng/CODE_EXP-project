@@ -8,10 +8,27 @@ import {
   TextInput,
   Button,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import firebase from "../database/firebaseDB";
+import Icon from "react-native-vector-icons/Ionicons";
+
 const GroupBuyGroupScreen = ({ navigation }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [text, setText] = useState("");
   const [time, setTime] = useState("");
+  const [count, setCount] = useState(0);
+
+  function AddGroupBuy() {
+    firebase.firestore().collection("Orders").add({
+      currentPax: 0,
+      maxPax: count,
+      pickerID: "Wee Meng",
+      shopID: text,
+      time: time,
+    });
+    alert("Success");
+  }
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -28,15 +45,34 @@ const GroupBuyGroupScreen = ({ navigation }) => {
 
   return (
     <View style={[styles.container, { backgroundColor: "white" }]}>
-      <Text style={{ fontSize: 24 }}>Store to dabao from</Text>
+      <Text style={styles.standardText}>Store to dabao from</Text>
       <TextInput
         style={styles.textInput}
         value={text}
         onChangeText={(input) => setText(input)}
       />
-      <Text style={{ fontSize: 24 }}>How many packets?</Text>
+      <Text style={styles.standardText}>How many packets?</Text>
       <View>
-        <Button title="Pick a time" onPress={showDatePicker} />
+        <TouchableOpacity
+          style={styles.icon}
+          onPress={() => setCount(count - 1)}
+        >
+          <Ionicons name="remove-circle" size={20} color="blue" />
+        </TouchableOpacity>
+        <Text style={styles.standardText}> {count}</Text>
+        <TouchableOpacity
+          style={styles.icon}
+          onPress={() => setCount(count + 1)}
+        >
+          <Ionicons name="add-circle" size={20} color="blue" />
+        </TouchableOpacity>
+      </View>
+      <View>
+        <Button
+          style={{ backgroundColor: "#add8e6" }}
+          title="Pick a time"
+          onPress={showDatePicker}
+        />
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="time"
@@ -44,13 +80,13 @@ const GroupBuyGroupScreen = ({ navigation }) => {
           onCancel={hideDatePicker}
         />
       </View>
-      <Text> Time picked : {JSON.stringify(time)}</Text>
+      <Text style={styles.standardText}>
+        {" "}
+        Time picked : {JSON.stringify(time)}
+      </Text>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("ViewOrdersScreen")}
-        >
+        <TouchableOpacity style={styles.button} onPress={() => AddGroupBuy()}>
           <Text style={styles.buttonText}>Save</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -82,7 +118,7 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 10,
-    backgroundColor: "blue",
+    backgroundColor: "#add8e6",
     borderRadius: 5,
     margin: 10,
     marginTop: 30,
@@ -93,5 +129,11 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
+  },
+  icon: {
+    paddingLeft: 5,
+  },
+  standardText: {
+    fontSize: 24,
   },
 });

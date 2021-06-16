@@ -19,6 +19,7 @@ export default function AddGroupBuy({ route, navigation }) {
   const [shopInfo, setShopInfo] = useState([]);
   const { newShopName } = route.params;
   const [text, setText] = useState("");
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     const unsubscribeArr = [];
@@ -93,6 +94,19 @@ export default function AddGroupBuy({ route, navigation }) {
                 <Text>
                   {" "}
                   <Text>Available Pax:</Text>{" "}
+                  <TouchableOpacity
+                    style={styles.icon}
+                    onPress={() => setCount(count - 1)}
+                  >
+                    <Ionicons name="remove-circle" size={20} color="blue" />
+                  </TouchableOpacity>
+                  <Text> {count}</Text>
+                  <TouchableOpacity
+                    style={styles.icon}
+                    onPress={() => setCount(count + 1)}
+                  >
+                    <Ionicons name="add-circle" size={20} color="blue" />
+                  </TouchableOpacity>
                 </Text>
                 <Text> Add Orders: </Text>
                 <TextInput
@@ -147,5 +161,9 @@ const styles = StyleSheet.create({
     width: "80%",
     padding: 10,
     marginTop: 20,
+  },
+  icon: {
+    alignSelf: "flex-end",
+    paddingLeft: 5,
   },
 });
