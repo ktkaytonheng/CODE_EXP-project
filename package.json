@@ -9,7 +9,11 @@
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.55",
+<<<<<<< HEAD
     "@react-native-community/datetimepicker": "3.2.0",
+=======
+    "@expo/react-native-action-sheet": "^3.9.0",
+>>>>>>> 4b2db1603d776a4eb697910f62dba6ff96f98de3
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-firebase/app": "^12.1.0",
     "@react-native-firebase/auth": "^12.1.0",
