@@ -6,12 +6,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { TextInput } from 'react-native-paper';
 //import ImagePicker from 'react-native-image-crop-picker';
 import AddScreen from "./AddScreen";
-import { showAlert } from "react-native-customisable-alert";
 
 
 
 import storage from '@react-native-firebase/storage';
 import firebase from "../database/firebaseDB";
+
 
 
 import { createStackNavigator } from "@react-navigation/stack";
