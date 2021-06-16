@@ -2116,10 +2116,23 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.10.tgz#5dda643e19e587793bc2034dd9bf7398ad43d401"
   integrity sha512-rk4sWFsmtOw8oyx8SD3KSvawwaK7gRBSEIy2TAwURyGt+3TizssXP1r8nx3zY+R7v2vYYHXZ+k2/GULAT/bcaQ==
 
+"@react-native-firebase/app@^12.1.0":
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-12.1.0.tgz#fa2c989af2bd876ed83f792c0152067184a7db27"
+  integrity sha512-goulw5PFGo2NIqqZXpv7kyv0XPKWQT2G/2ZXEFMdgDnxZGRyiAH82gR/v9rAMCww1lFVTeMZdphU5WFN/qdptg==
+  dependencies:
+    opencollective-postinstall "^2.0.1"
+    superstruct "^0.6.2"
+
 "@react-native-firebase/auth@^12.1.0":
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-12.1.0.tgz#1897714d7650f49946611f932e3c6119482e49e9"
   integrity sha512-9/peQaPYl5M2q4q/06Sih3z+BL9wOlmXgPex7jqbF99DN6IUigEq6eOt0sR3/g0ftS/IRDG7BfbIN5MtuY1vbg==
+
+"@react-native-firebase/storage@^12.1.0":
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-12.1.0.tgz#efb70ad2d5dd062659aa5c830d976e262b14f4fb"
+  integrity sha512-xp5LGqPH6KcD0N9yc0Ye454ppxO/+5idL0AqXrmdA/B+HPHt49JRamkXSW8PrFXG3DVm3LcJEKHMhY6cEtpd5w==
 
 "@react-navigation/bottom-tabs@^5.11.11":
   version "5.11.11"
@@ -3280,6 +3293,16 @@ cliui@^6.0.0:
     strip-ansi "^6.0.0"
     wrap-ansi "^6.2.0"
 
+clone-deep@^2.0.1:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/clone-deep/-/clone-deep-2.0.2.tgz#00db3a1e173656730d1188c3d6aced6d7ea97713"
+  integrity sha512-SZegPTKjCgpQH63E+eN6mVEEPdQBOUzjyJm5Pora4lrwWRFS8I0QAxV/KD6vV/i0WuijHZWQC1fMsPEdxfdVCQ==
+  dependencies:
+    for-own "^1.0.0"
+    is-plain-object "^2.0.4"
+    kind-of "^6.0.0"
+    shallow-clone "^1.0.0"
+
 clone-deep@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/clone-deep/-/clone-deep-4.0.1.tgz#c19fd9bdbbf85942b4fd979c84dcf7d5f07c2387"
@@ -4134,10 +4157,22 @@ fontfaceobserver@^2.1.0:
   resolved "https://registry.yarnpkg.com/fontfaceobserver/-/fontfaceobserver-2.1.0.tgz#e2705d293e2c585a6531c2a722905657317a2991"
   integrity sha512-ReOsO2F66jUa0jmv2nlM/s1MiutJx/srhAe2+TE8dJCMi02ZZOcCTxTCQFr3Yet+uODUtnr4Mewg+tNQ+4V1Ng==
 
-for-in@^1.0.2:
+for-in@^0.1.3:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/for-in/-/for-in-0.1.8.tgz#d8773908e31256109952b1fdb9b3fa867d2775e1"
+  integrity sha1-2Hc5COMSVhCZUrH9ubP6hn0ndeE=
+
+for-in@^1.0.1, for-in@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
+
+for-own@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/for-own/-/for-own-1.0.0.tgz#c63332f415cedc4b04dbfe70cf836494c53cb44b"
+  integrity sha1-xjMy9BXO3EsE2/5wz4NklMU8tEs=
+  dependencies:
+    for-in "^1.0.1"
 
 fragment-cache@^0.2.1:
   version "0.2.1"
@@ -4894,7 +4929,7 @@ kind-of@^5.0.0:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-5.1.0.tgz#729c91e2d857b7a419a1f9aa65685c4c33f5845d"
   integrity sha512-NGEErnH6F2vUuXDh+OlbcKW7/wOcfdRHaZ7VWtqCztfHri/++YKmP51OdWeGPuqCOba6kk2OTe5d02VmTB80Pw==
 
-kind-of@^6.0.0, kind-of@^6.0.2:
+kind-of@^6.0.0, kind-of@^6.0.1, kind-of@^6.0.2:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
@@ -5409,6 +5444,14 @@ mixin-deep@^1.2.0:
   dependencies:
     for-in "^1.0.2"
     is-extendable "^1.0.1"
+
+mixin-object@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/mixin-object/-/mixin-object-2.0.1.tgz#4fb949441dab182540f1fe035ba60e1947a5e57e"
+  integrity sha1-T7lJRB2rGCVA8f4DW6YOGUel5X4=
+  dependencies:
+    for-in "^0.1.3"
+    is-extendable "^0.1.1"
 
 mkdirp@^0.5.1:
   version "0.5.5"
@@ -6061,12 +6104,10 @@ react-native-date-picker@^3.3.1:
   resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-3.3.1.tgz#1f8b0712967c1e01257d32bab759aa64d6ffb601"
   integrity sha512-9784eFZtxGooIitLSpDRrjWuJzc6vSmQzubZTzLRxMDHIHt2wlAep3QxVMFKj1SSPXNBjM4vY8CbkJXFlYgSNQ==
 
-<<<<<<< HEAD
 react-native-floating-action@^1.21.0:
   version "1.21.0"
   resolved "https://registry.yarnpkg.com/react-native-floating-action/-/react-native-floating-action-1.21.0.tgz#cb1e8349fec5b9aed06c8053c07372822c64b22f"
   integrity sha512-ozd/iaJunrEYc4eGUWkP+4UI8yoIL0nQsToI3hnJRste/3LPhBkyu0eG3RTjc6aFY+q++JpRmgO469Ck8jJOwg==
-=======
 react-native-experimental-navigation@0.26.x:
   version "0.26.12"
   resolved "https://registry.yarnpkg.com/react-native-experimental-navigation/-/react-native-experimental-navigation-0.26.12.tgz#8b458757178b06908b3e8fe7042458332e8e4825"
@@ -6078,7 +6119,6 @@ react-native-experimental-navigation@0.26.x:
     clamp "^1.0.1"
     fbjs "^0.8.1"
     react-addons-pure-render-mixin "^15.0.2"
->>>>>>> af79487c7666b1b1fbce840f519c938143c2a3fc
 
 react-native-gesture-handler@~1.10.2:
   version "1.10.3"
@@ -6090,6 +6130,11 @@ react-native-gesture-handler@~1.10.2:
     hoist-non-react-statics "^3.3.0"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-image-crop-picker@^0.36.2:
+  version "0.36.2"
+  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.36.2.tgz#fcb35c1a12d805bedbb6d94a87078e86a6c9b49f"
+  integrity sha512-cTauoEHHzx14ZHA7Pt65e7RVnbn1WRYQz2ufTZp9/05EtNDrdsXwNhgtXdWVFbOhYB8qgUFQjy2NelkBOHIH3g==
 
 react-native-iphone-x-helper@^1.3.0:
   version "1.3.1"
@@ -6564,6 +6609,15 @@ setprototypeof@1.1.1:
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.1.tgz#7e95acb24aa92f5885e0abef5ba131330d4ae683"
   integrity sha512-JvdAWfbXeIGaZ9cILp38HntZSFSo3mWg6xGcJJsd+d4aRMOqauag1C63dJfDw7OaMYwEbHMOxEZ1lqVRYP2OAw==
 
+shallow-clone@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/shallow-clone/-/shallow-clone-1.0.0.tgz#4480cd06e882ef68b2ad88a3ea54832e2c48b571"
+  integrity sha512-oeXreoKR/SyNJtRJMAKPDSvd28OqEwG4eR/xc856cRGBII7gX9lvAqDxusPm0846z/w/hWYjI1NpKwJ00NHzRA==
+  dependencies:
+    is-extendable "^0.1.1"
+    kind-of "^5.0.0"
+    mixin-object "^2.0.1"
+
 shallow-clone@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/shallow-clone/-/shallow-clone-3.0.1.tgz#8f2981ad92531f55035b01fb230769a40e02efa3"
@@ -6851,6 +6905,13 @@ supports-color@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
   integrity sha1-U10EXOa2Nj+kARcIRimZXp3zJMc=
+superstruct@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/superstruct/-/superstruct-0.6.2.tgz#c5eb034806a17ff98d036674169ef85e4c7f6a1c"
+  integrity sha512-lvA97MFAJng3rfjcafT/zGTSWm6Tbpk++DP6It4Qg7oNaeM+2tdJMuVgGje21/bIpBEs6iQql1PJH6dKTjl4Ig==
+  dependencies:
+    clone-deep "^2.0.1"
+    kind-of "^6.0.1"
 
 supports-color@^5.3.0:
   version "5.5.0"

@@ -1,17 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Image, View, Platform, StyleSheet, TextInput, Text } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import { Button, Image, View, Platform, StyleSheet, TextInput, Text, ScrollView } from 'react-native';
+//import * as ImagePicker from 'expo-image-picker';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
+import ImagePicker from 'react-native-image-crop-picker';
+import AddScreen from "./AddScreen";
 
 
-export default function ImagePickerExample() {
+import { createStackNavigator } from "@react-navigation/stack";
+const Stack = createStackNavigator();
+
+
+
+
+export default function AddScreenStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        options={{ headerTitle: "Add a new stall" }}
+        name="AddScreen"
+        component={ImagePickerExample}
+      />
+    </Stack.Navigator>
+  );
+}
+
+
+function ImagePickerExample({ navigation }) {
   const [image, setImage] = useState(null);
   const [text, onChangeText] = React.useState("");
   const [text2, onChangeText2] = React.useState("");
   const [titleText, setTitleText] = useState("Shop Name");
   const [titleText2, setTitleText2] = useState("Location");
 
+
+  const pickImage = () => {
+    ImagePicker.openCamera({
+      width: 1200,
+      height: 780,
+      cropping: true,
+    }).then((image) => {
+      console.log(image);
+      const imageUri = Platform.OS === 'android' ? image.sourceURL : image.path;
+      setImage(imageUri);
+    });
+  };
 
 
   useEffect(() => {
@@ -25,11 +58,12 @@ export default function ImagePickerExample() {
     })();
   }, []);
 
+
   const Separator = () => (
     <View style={styles.separator} />
   );
   
-   const pickImage = async () => {
+   const pickImage1 = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -59,9 +93,18 @@ export default function ImagePickerExample() {
     }
   };
 
+
+ 
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {image && <Image source={{ uri: image }} style={{ width: 250, height: 450 }} />}
+
+    <View style={styles.container}>
+    <ScrollView
+    showsVerticalScrollIndicator={false}>
+    <View style={styles.container}>
+    <View style={styles.container1}>
+      {image && <Image source={{ uri: image }} style={{ width: 246, height: 445 }} />}
+      </View>
       <Separator />
       <Text style={styles.titleText}>
       Shop Name
@@ -83,6 +126,8 @@ export default function ImagePickerExample() {
         title="Submit"
         onPress={() => Alert.alert('Simple Button pressed')}
       />
+      </View>
+    </ScrollView>
       <ActionButton buttonColor="#2e64e5">
         <ActionButton.Item
           buttonColor="#9b59b6"
@@ -101,7 +146,21 @@ export default function ImagePickerExample() {
   );
 }
 
+
 const styles = StyleSheet.create({
+  container1: {
+    width: 250, 
+    height: 450,
+    borderWidth: 2,
+    justifyContent: 'center'
+  },
+  container: {
+    paddingTop: 70,
+    paddingBottom: 30,
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center'
+  },
   input: {
     height: 40,
     width: 300,
