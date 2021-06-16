@@ -26,8 +26,8 @@ export default function AddListScreen({ route }) {
 
   function increment() {
     firebase.firestore().collection("Orders").add({
-      currentPax: paxes,
-      maxPax: 2,
+      currentPax: parseInt("0"),
+      maxPax: parseInt(paxes),
       pickerID: "currentUser",
       shopID: shopName,
       time: timing,
