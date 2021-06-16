@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  PermissionsAndroid,
+  Permission,
 } from "react-native";
 import { useHistory } from "react-router-dom";
 import Button from "../components/Button";
@@ -14,6 +16,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
 import firebase from "../database/firebase";
+import uuid from "uuid";
+// import { utils } from "@react-native-firebase/app";
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
@@ -21,6 +25,7 @@ const storage = firebase.storage();
 
 export default function HomeScreen() {
   const [initialized, setInitialized] = useState(false);
+  const [uploadComplete, setUploadComplete] = useState(false);
   const [userID, setUserID] = useState("");
   // const [userInfo, setUserInfo] = useState({name: " ", email: " ", image: " "});
   const [email, setEmail] = useState("");
@@ -35,29 +40,17 @@ export default function HomeScreen() {
   const notInitialRender = useRef(false);
   let history = useHistory();
 
-  function UploadImageToStorage(path, imageName) {
-    let reference = storage.ref(imageName);
-    let task = reference.putFile(path);
-
-    task.then(() => {
-      console.log("Image uploaded to the bucket");
-    });
-  }
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: false,
+      allowsEditing: true,
       aspect: [20, 50],
       quality: 1,
     });
 
     console.log(result);
 
-    if (!result.cancelled) {
-      // setUploadedImage(result.uri);
-      console.log(result.uri);
-    }
+    _handleImagePicked(result);
   };
 
   const cameraImage = async () => {
@@ -75,23 +68,70 @@ export default function HomeScreen() {
     }
   };
 
-  useEffect(() => {
-    const uploadImageToDB = async () => {
-      const reference = storage.ref("images/" + userID + ".png");
-      await reference.put(uploadedImage);
-    };
-    uploadImageToDB();
-  }, [uploadedImage]);
+  const _handleImagePicked = async (pickerResult) => {
+    try {
+      setUploadComplete(false);
 
+      if (!pickerResult.cancelled) {
+        const uploadUrl = await uploadImageAsync(pickerResult.uri);
+        setImageURL(uploadUrl);
+      }
+    } catch (e) {
+      console.log(e);
+      alert("Upload failed, sorry :(");
+    } finally {
+      setUploadComplete(true);
+    }
+  };
+  async function uploadImageAsync(uri) {
+    // Why are we using XMLHttpRequest? See:
+    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", uri, true);
+      xhr.send(null);
+    });
+
+    console.log("blob: " + blob);
+    const ref = firebase
+      .storage()
+      .ref()
+      .child("images/" + userID);
+    const snapshot = await ref.put(blob);
+
+    // We're done with the blob, close and release it
+    blob.close();
+
+    setUploadComplete(true);
+
+    return await snapshot.ref.getDownloadURL();
+  }
   useEffect(() => {
     (async () => {
-      if (Platform.OS !== "web") {
+      if (Platform.OS === "android") {
+        const granted = await PermissionsAndroid.request([
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        ]);
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log("Gained access to media");
+        } else {
+          console.log("Media access denied");
+        }
+      } else if (Platform.OS === "ios") {
         const {
           status,
         } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        console.log(status);
         if (status !== "granted") {
-          alert("We need to access your library to upload photos");
+          alert("Sorry, we require access to your media to upload photos");
         }
       }
     })();

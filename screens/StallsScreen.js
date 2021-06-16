@@ -138,7 +138,7 @@ const Stack = createStackNavigator();
 export default function StallsScreenStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="StallsScreen" component={StallsScreen} />
+      <Stack.Screen name="Available Stalls" component={StallsScreen} />
       <Stack.Screen name="Add List" component={AddListScreen} />
       <Stack.Screen name="My listing" component={EditListDetailScreen} />
     </Stack.Navigator>

@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   FlatList,
+  Image,
   ImageBackground,
   TextInput,
 } from "react-native";
@@ -18,6 +19,7 @@ import firebase from "../database/firebase";
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
+
 const Stack = createStackNavigator();
 const firestore = firebase.firestore();
 
@@ -49,6 +51,10 @@ function GroupBuyScreen({ navigation }) {
   function renderItem({ item }) {
     return (
       <View style={styles.itemContainer}>
+        <View style={styles.row}>
+          <Image source={{ uri: orders.image }}></Image>
+        </View>
+
         <Text style={{ textAlign: "center" }}>{item.shopName}</Text>
         <View style={styles.container}>
           <ImageBackground source={{ uri: item.shopMenu }} style={styles.image}>
@@ -85,7 +91,13 @@ function GroupBuyScreen({ navigation }) {
       colors={["#f9c449", "#e8a49c", "#e8a49c"]}
       style={styles.container}
     >
-      <FlatList data={orders} renderItem={renderItem} style={{}} />
+      <FlatList
+        data={orders}
+        renderItem={renderItem}
+        style={{
+          paddingVertical: "5%",
+        }}
+      />
 
       {/* <ActionButton buttonColor="#2e64e5">
         <ActionButton.Item
@@ -188,5 +200,8 @@ const styles = StyleSheet.create({
   icon: {
     alignSelf: "flex-end",
     marginTop: -5,
+  },
+  row: {
+    flexDirection: "row",
   },
 });
