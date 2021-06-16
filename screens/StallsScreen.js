@@ -83,7 +83,7 @@ function StallsScreen({ navigation }) {
       sections={[
         {
           title: 'Title1',
-          data: shopInfo.slice(0, 10000),
+          data: shops.slice(0, 10000),
         },
       ]}
       style={styles.gridView}
@@ -99,21 +99,21 @@ function StallsScreen({ navigation }) {
           if(text == ""){
             firebase
             .firestore()
-            .collection("shopInfo")
+            .collection("Shops")
             .onSnapshot((collection) => {
               const updatedShopInfo = collection.docs.map((doc) => doc.data());
-              setShopInfo(updatedShopInfo);
+              setShop(updatedShopInfo);
             });
           }
           else{
             const unsubscribe = firebase
             .firestore()
-            .collection("shopInfo")
+            .collection("Shops")
             .where('shopName', '>=', text.toUpperCase())
             .where('shopName', '<=', text+ '\uf8ff')
             .onSnapshot((collection) => {
               const updatedShopInfo = collection.docs.map((doc) => doc.data());
-              setShopInfo(updatedShopInfo);
+              setShop(updatedShopInfo);
             })
             //console.warn(text);
             }}
@@ -183,3 +183,4 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
+
