@@ -13,7 +13,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import firebase from "../database/firebase";
 import { Ionicons } from "@expo/vector-icons";
 
-const db = firebase.firestore().collection("shopInfo");
+const firestore = firebase.firestore();
 const Stack = createStackNavigator();
 
 export default function AddGroupBuy({ route, navigation }) {
@@ -23,40 +23,17 @@ export default function AddGroupBuy({ route, navigation }) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    const unsubscribeArr = [];
-    firebase
-      .firestore()
-      .collection("shopInfo")
-      .where("shopName", "==", newShopName)
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          const unsubscribe = doc.ref
-            .collection("menuItems")
-            .onSnapshot((collection) => {
-              const updatedShopInfo = collection.docs.map((doc) => {
-                return { id: doc.id, ...doc.data() };
-              });
-              setShopInfo(updatedShopInfo);
-            });
-          unsubscribeArr.push(unsubscribe);
-        });
+    const unsubscribe = firestore
+      .collection("Shops")
+      .onSnapshot((collection) => {
+        const updatedShopInfo = collection.docs.map((doc) => doc.data());
+        setShopInfo(updatedShopInfo);
       });
+
     return () => {
-      unsubscribeArr.forEach((unsubscribe) => {
-        unsubscribe();
-      });
+      unsubscribe();
     };
   }, []);
-
-  useEffect(() => {
-    if (route.params?.text) {
-      const newNote = {
-        remarksItem: route.params.text,
-      };
-      // db.add(newNote);
-    }
-  }, [route.params?.text]);
 
   // The function to render each row in our FlatList
   function renderItem({ item }) {
@@ -82,26 +59,23 @@ export default function AddGroupBuy({ route, navigation }) {
             <SectionContent>
               <View>
                 <Text>
-                  <Text> {newShopName}</Text>
+                  <Text style={styles.textDefaultFont}>{newShopName}</Text>
                 </Text>
                 <Text>
-                  {" "}
-                  <Text>Location:</Text>{" "}
+                  <Text style={styles.textDefaultFont}>
+                    {item.shopLocation}
+                  </Text>
                 </Text>
+
                 <Text>
-                  {" "}
-                  <Text>Time:</Text>{" "}
-                </Text>
-                <Text>
-                  {" "}
-                  <Text>Available Pax:</Text>{" "}
+                  <Text style={styles.textDefaultFont}>No. Food:</Text>
                   <TouchableOpacity
                     style={styles.icon}
                     onPress={() => setCount(count - 1)}
                   >
                     <Ionicons name="remove-circle" size={20} color="blue" />
                   </TouchableOpacity>
-                  <Text> {count}</Text>
+                  <Text style={styles.textDefaultFont}> {count}</Text>
                   <TouchableOpacity
                     style={styles.icon}
                     onPress={() => setCount(count + 1)}
@@ -109,10 +83,11 @@ export default function AddGroupBuy({ route, navigation }) {
                     <Ionicons name="add-circle" size={20} color="blue" />
                   </TouchableOpacity>
                 </Text>
-                <Text> Add Orders: </Text>
+                <Text style={styles.textDefaultFont}>Enter your orders: </Text>
                 <TextInput
                   style={styles.textInput}
                   value={text}
+                  placeholder="Chicken Rice"
                   onChangeText={(input) => setText(input)}
                 />
               </View>
@@ -159,12 +134,19 @@ const styles = StyleSheet.create({
   textInput: {
     borderColor: "grey",
     borderWidth: 1,
-    width: "80%",
+    width: "95%",
+    height: 150,
     padding: 10,
     marginTop: 20,
   },
   icon: {
     alignSelf: "flex-end",
     paddingLeft: 5,
+  },
+  textDefaultFont: {
+    fontSize: 24,
+    marginVertical: 15,
+    paddingEnd: 5,
+    textAlign: "center",
   },
 });

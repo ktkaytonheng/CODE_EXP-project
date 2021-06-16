@@ -10,7 +10,7 @@ import {
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
 import { LinearGradient } from "expo-linear-gradient";
-import { Animated } from "react-native";
+// import { Animated } from "react-native";
 import { useHistory } from "react-router-dom";
 import firebase from "../database/firebase";
 import "firebase/auth";

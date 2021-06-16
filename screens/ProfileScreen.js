@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  ActionButton,
 } from "react-native";
 import { useHistory } from "react-router-dom";
 import Button from "../components/Button";
@@ -35,15 +36,6 @@ export default function HomeScreen() {
   const notInitialRender = useRef(false);
   let history = useHistory();
 
-  function UploadImageToStorage(path, imageName) {
-    let reference = storage.ref(imageName);
-    let task = reference.putFile(path);
-
-    task.then(() => {
-      console.log("Imageuploaded to the bucket");
-    });
-  }
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -55,7 +47,7 @@ export default function HomeScreen() {
     console.log(result);
 
     if (!result.cancelled) {
-      // setUploadedImage(result.uri);
+      setUploadedImage(result.uri);
       console.log(result.uri);
     }
   };
@@ -163,15 +155,30 @@ export default function HomeScreen() {
         colors={["#f9c449", "#e8a49c", "#e8a49c"]}
         style={styles.subcontainerTop}
       >
-        <TouchableOpacity
+        <ActionButton
+          icon={<Image source={{ uri: imageURL }} style={styles.displayPic} />}
           onPress={pickImage}
           style={{
             borderRadius: 200,
             // backgroundColor: 'pink'
           }}
         >
-          <Image source={{ uri: imageURL }} style={styles.displayPic} />
-        </TouchableOpacity>
+          <ActionButton.Item
+            buttonColor="#9b59b6"
+            title="Take Photo"
+            onPress={cameraImage}
+          >
+            <Icon name="camera-outline" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item
+            buttonColor="#3498db"
+            title="Choose Photo"
+            onPress={pickImage}
+          >
+            <Icon name="md-images-outline" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+        </ActionButton>
+        {/* {image && <Image source={{ uri: image }} style={{ width: 246, height: 445 }} />} */}
       </LinearGradient>
       <View style={styles.subcontainerBottom}>
         <View

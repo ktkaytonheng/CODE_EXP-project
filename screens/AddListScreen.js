@@ -17,6 +17,7 @@ const auth = firebase.auth();
 
 export default function AddListScreen({ navigation, route }) {
   const [initialized, setInitialized] = useState(false);
+  const [userInfo, setUserInfo] = useState([]);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const { shopName, shopMenu, shopLocation, shopID } = route.params;
   const [userID, setUserID] = useState();
@@ -49,6 +50,18 @@ export default function AddListScreen({ navigation, route }) {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if (initialized) {
+      const unsubscribe = firestore
+        .collection("Users")
+        .doc(userID)
+        .onSnapshot((docRef) => {
+          const retrievedUserInfo = { ...docRef.data() };
+          setUserInfo(retrievedUserInfo);
+        });
+    }
+  }, [initialized]);
+
   function AddOrderToDB() {
     if (initialized) {
       firestore
@@ -57,7 +70,11 @@ export default function AddListScreen({ navigation, route }) {
           currentPax: 0,
           maxPax: paxes,
           pickerID: userID,
-          shopID: shopID,
+          pickerName: userInfo.name,
+          // pickerPic: userInfo.image,
+          shopMenu: shopMenu,
+          shopLocation: shopLocation,
+          shopName: shopName,
           time: timing,
         })
         .then((docRef) => {

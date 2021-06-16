@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { FlatGrid } from "react-native-super-grid";
 import { createStackNavigator } from "@react-navigation/stack";
+import { LinearGradient } from "expo-linear-gradient";
 import AddListScreen from "./AddListScreen";
 import EditListDetailScreen from "./EditListDetailScreen";
 import firebase from "../database/firebase";
@@ -68,15 +69,20 @@ function StallsScreen({ navigation }) {
   }
 
   return (
-    <FlatGrid
-      itemDimension={130}
-      data={shops}
-      style={styles.gridView}
-      // staticDimension={300}
-      // fixed
-      spacing={10}
-      renderItem={renderItem}
-    />
+    <LinearGradient
+      colors={["#f9c449", "#e8a49c", "#e8a49c"]}
+      style={styles.container}
+    >
+      <FlatGrid
+        itemDimension={130}
+        data={shops}
+        style={styles.gridView}
+        // staticDimension={300}
+        // fixed
+        spacing={10}
+        renderItem={renderItem}
+      />
+    </LinearGradient>
   );
 }
 
@@ -93,6 +99,12 @@ export default function StallsScreenStack() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    // alignItems: "center",
+    justifyContent: "center",
+  },
   gridView: {
     marginTop: 10,
     flex: 1,

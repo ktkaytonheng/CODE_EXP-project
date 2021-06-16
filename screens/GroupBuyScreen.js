@@ -9,6 +9,7 @@ import {
   TextInput,
 } from "react-native";
 import { Button } from "react-native-rapi-ui";
+import { LinearGradient } from "expo-linear-gradient";
 import { FlatGrid } from "react-native-super-grid";
 import AddGroupBuy from "./AddGroupBuy";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -25,14 +26,17 @@ function GroupBuyScreen({ navigation }) {
   const [initialized, setInitialized] = useState(false);
   //save order collection to shop.info , need to retrive shopID
   const [orders, setOrders] = useState([]);
-  //save real shop info
-  const [orderInfo, setOrderInfo] = useState([]);
 
   useEffect(() => {
     const unsubscribe = firestore
       .collection("Orders")
       .onSnapshot((collection) => {
-        const orderCollection = collection.docs.map((doc) => doc.data());
+        const orderCollection = collection.docs.map((doc) => {
+          return {
+            orderID: doc.id,
+            ...doc.data(),
+          };
+        });
         setOrders(orderCollection);
         setInitialized(true);
       });
@@ -42,30 +46,6 @@ function GroupBuyScreen({ navigation }) {
     };
   }, []);
 
-  useEffect(() => {
-    if (initialized) {
-      console.log("Orders: " + { ...orders });
-      const orderArr = [...orders];
-      for (order in orderArr) {
-        console.log(order);
-        firestore
-          .collection("Shops")
-          .doc(order.shopID)
-          .onSnapshot((docSnapshot) => {
-            order = () => {
-              return {
-                ...order,
-                ...docSnapshot.data(),
-              };
-            };
-            console.log(order);
-          });
-        setOrders(orderArr);
-      }
-    }
-  }, [initialized]);
-
-  const shopName = firebase.firestore().collection("Shops");
   // The function to render each row in our FlatList
   function renderItem({ item }) {
     return (
@@ -113,7 +93,10 @@ function GroupBuyScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container2}>
+    <LinearGradient
+      colors={["#f9c449", "#e8a49c", "#e8a49c"]}
+      style={styles.container}
+    >
       <FlatGrid
         itemDimension={"2"}
         data={orders}
@@ -141,7 +124,7 @@ function GroupBuyScreen({ navigation }) {
           <Icon name="md-images-outline" style={styles.actionButtonIcon} />
         </ActionButton.Item> */}
       </ActionButton>
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -183,11 +166,6 @@ export default function GroupBuyStack() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  container2: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
