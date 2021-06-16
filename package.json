@@ -32,11 +32,11 @@
     "react-native-gesture-handler": "~1.10.2",
     "react-native-increment-decrement-button": "^1.0.0",
     "react-native-modal-datetime-picker": "^10.0.0",
-<<<<<<< HEAD
+    
     "react-native-paper": "^4.9.1",
-=======
+
     "react-native-image-crop-picker": "^0.36.2",
->>>>>>> b6b28e39c0246fa79d4a109a60a7839694b390d6
+
     "react-native-rapi-ui": "^0.2.1",
     "react-native-reanimated": "~2.1.0",
     "react-native-router-flux": "3.36.0",
