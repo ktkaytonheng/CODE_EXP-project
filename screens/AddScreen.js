@@ -15,6 +15,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { TextInput } from "react-native-paper";
 //import ImagePicker from 'react-native-image-crop-picker';
 import AddScreen from "./AddScreen";
+import { LinearGradient } from "expo-linear-gradient";
 
 // import storage from "@react-native-firebase/storage";
 import firebase from "../database/firebase";
@@ -70,108 +71,6 @@ function ImagePickerExample({ navigation }) {
       console.log("Imageuploaded to the bucket");
     });
   }
-
-  //   state = {
-  //     imagePath: require("./img/default.jpg"),
-  //     isLoading: false,
-  //     status: '',
-  // }
-
-  // chooseFile = () => {
-  //     this.setState({ status: '' });
-  //     var options = {
-  //         title: 'Select Image',
-  //         customButtons: [
-  //             { name: 'customOptionKey', title: 'Choose Photo from Custom Option' },
-  //         ],
-  //         storageOptions: {
-  //             skipBackup: true, // do not backup to iCloud
-  //             path: 'images', // store camera images under Pictures/images for android and Documents/images for iOS
-  //         },
-  //     };
-  //     ImagePicker.showImagePicker(options, response => {
-  //         if (response.didCancel) {
-  //             console.log('User cancelled image picker', firebase.storage());
-  //         } else if (response.error) {
-  //             console.log('ImagePicker Error: ', response.error);
-  //         } else if (response.customButton) {
-  //             console.log('User tapped custom button: ', response.customButton);
-  //         } else {
-  //             let path = this.getPlatformPath(response).value;
-  //             let fileName = this.getFileName(response.fileName, path);
-  //             this.setState({ imagePath: path });
-  //             this.uploadImageToStorage(path, fileName);
-  //         }
-  //     });
-  // };
-
-  // getFileName(name, path); {
-  //     if (name != null) { return name; }
-
-  //     if (Platform.OS === "ios") {
-  //         path = "~" + path.substring(path.indexOf("/Documents"));
-  //     }
-  //     return path.split("/").pop();
-  // }
-
-  // uploadImageToStorage(path, name); {
-  //     this.setState({ isLoading: true });
-  //     let reference = firebase.storage().ref(name);
-  //     let task = reference.putFile(path);
-  //     task.then(() => {
-  //         console.log('Image uploaded to the bucket!');
-  //         this.setState({ isLoading: false, status: 'Image uploaded successfully' });
-  //     }).catch((e) => {
-  //         status = 'Something went wrong';
-  //         console.log('uploading image error => ', e);
-  //         this.setState({ isLoading: false, status: 'Something went wrong' });
-  //     });
-  // }
-
-  // /**
-  //  * Get platform specific value from response
-  //  */
-  // getPlatformPath({ path, uri }); {
-  //     return Platform.select({
-  //         android: { "value": path },
-  //         ios: { "value": uri }
-  //     })
-  // }
-
-  // getPlatformURI(imagePath); {
-  //     let imgSource = imagePath;
-  //     if (isNaN(imagePath)) {
-  //         imgSource = { uri: this.state.imagePath };
-  //         if (Platform.OS == 'android') {
-  //             imgSource.uri = "file:///" + imgSource.uri;
-  //         }
-  //     }
-  //     return imgSource
-  // }
-
-  // const takePhotoFromCamera = () => {
-  //   ImagePicker.openCamera({
-  //     width: 1200,
-  //     height: 780,
-  //     cropping: true,
-  //   }).then((image) => {
-  //     console.log(image);
-  //     const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
-  //     setImage(imageUri);
-  //   });
-  // };
-
-  // const choosePhotoFromLibrary = () => {
-  //   ImagePicker.openPicker({
-  //     width: 1200,
-  //     height: 780,
-  //     cropping: true,
-  //   }).then((image) => {
-  //     console.log(image);
-  //     const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
-  //     setImage(imageUri);
-  //   });
-  // };
 
   useEffect(() => {
     (async () => {
@@ -304,7 +203,10 @@ function ImagePickerExample({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={["#f9c449", "#e8a49c", "#e8a49c"]}
+      style={styles.container}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles.container1}>
@@ -369,7 +271,7 @@ function ImagePickerExample({ navigation }) {
           <Icon name="md-images-outline" style={styles.actionButtonIcon} />
         </ActionButton.Item>
       </ActionButton>
-    </View>
+    </LinearGradient>
   );
 }
 

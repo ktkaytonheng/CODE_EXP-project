@@ -16,7 +16,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
 import firebase from "../database/firebase";
-import uuid from "uuid";
+// import uuid from "uuid";
 // import { utils } from "@react-native-firebase/app";
 
 const firestore = firebase.firestore();

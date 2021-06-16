@@ -51,10 +51,6 @@ function GroupBuyScreen({ navigation }) {
   function renderItem({ item }) {
     return (
       <View style={styles.itemContainer}>
-        <View style={styles.row}>
-          <Image source={{ uri: orders.image }}></Image>
-        </View>
-
         <Text style={{ textAlign: "center" }}>{item.shopName}</Text>
         <View style={styles.container}>
           <ImageBackground source={{ uri: item.shopMenu }} style={styles.image}>
@@ -203,5 +199,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
+    flex: 1,
   },
+  column: {},
 });
