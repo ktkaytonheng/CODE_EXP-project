@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Image, TextInput,TouchableOpacity, Button } from "react-native";
+import { Text, View, StyleSheet, Image, TextInput,TouchableOpacity, Button, Alert } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import firebase from "../database/firebaseDB";
 import {Picker} from '@react-native-picker/picker';
@@ -25,11 +25,7 @@ export default function AddListScreen({ route }) {
     hideDatePicker();
   };
 
-  function increment() {
-    if(parseInt(paxes) === 0){
-      alert('Please Enter Pax');
-      return;
-    }
+  onDeleteBTN = () => {
     firebase.firestore().collection("Orders").add({
       currentPax: parseInt("0"),
       maxPax: parseInt(paxes),
@@ -38,6 +34,21 @@ export default function AddListScreen({ route }) {
       time: timing,
     });
     alert('Success');
+  };
+
+  function increment() {
+    Alert.alert(
+      "Confirmation",
+      "Are the details correct?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Confirm", onPress: this.onDeleteBTN }
+      ]
+    );
   }
 
   return (
