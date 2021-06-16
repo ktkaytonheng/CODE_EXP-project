@@ -5,6 +5,7 @@ import {
   View,
   FlatList,
   TextInput,
+  ImageBackground,
   TouchableOpacity,
 } from "react-native";
 import { Layout, Button } from "react-native-rapi-ui";
@@ -14,108 +15,136 @@ import firebase from "../database/firebase";
 import { Ionicons } from "@expo/vector-icons";
 
 const firestore = firebase.firestore();
+const auth = firebase.auth();
 const Stack = createStackNavigator();
 
 export default function AddGroupBuy({ route, navigation }) {
   const [shopInfo, setShopInfo] = useState([]);
-  const { newShopName } = route.params;
-  const [text, setText] = useState("");
+  const { shopName, orderID, location, menu } = route.params;
+  const [order, setOrder] = useState("");
   const [count, setCount] = useState(0);
+  const [userID, setUserID] = useState("");
+  const [userInfo, setUserInfo] = useState([]);
+  const [initialized, setInitialized] = useState(false);
+  const [userDP, setUserDP] = useState("");
 
   useEffect(() => {
-    const unsubscribe = firestore
-      .collection("Shops")
-      .onSnapshot((collection) => {
-        const updatedShopInfo = collection.docs.map((doc) => doc.data());
-        setShopInfo(updatedShopInfo);
-      });
-
-    return () => {
-      unsubscribe();
-    };
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log("uid: " + user.uid);
+        setUserID(user.uid);
+        setInitialized(true);
+      } else history.push("/");
+    });
+    return () => unsubscribe();
   }, []);
 
-  // The function to render each row in our FlatList
-  function renderItem({ item }) {
-    return (
-      <View
-        style={{
-          padding: 10,
-          paddingTop: 20,
-          paddingBottom: 20,
-          borderBottomColor: "#ccc",
-          borderBottomWidth: 1,
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        <TouchableOpacity onPress={() => deleteNote(item.id)}>
-          <Ionicons name="trash" size={16} color="blue" />
-        </TouchableOpacity>
-        <Layout>
-          {/* need to change to image */}
-          <Section>
-            <SectionImage source={require("../assets/image.jpg")} />
-            <SectionContent>
-              <View>
-                <Text>
-                  <Text style={styles.textDefaultFont}>{newShopName}</Text>
-                </Text>
-                <Text>
-                  <Text style={styles.textDefaultFont}>
-                    {item.shopLocation}
-                  </Text>
-                </Text>
+  useEffect(() => {
+    if (initialized) {
+      firestore
+        .collection("Users")
+        .doc(userID)
+        .onSnapshot((docSnapshot) => {
+          const retrieved = docSnapshot.data();
+          setUserInfo(retrieved);
+          console.log("Retrieved image: " + retrieved.image);
+          if (retrieved.image != null || retrieved.image != " ")
+            setUserDP(retrieved.image);
+          else setUserDP("/images/defaultdp.png");
 
-                <Text>
-                  <Text style={styles.textDefaultFont}>No. Food:</Text>
-                  <TouchableOpacity
-                    style={styles.icon}
-                    onPress={() => setCount(count - 1)}
-                  >
-                    <Ionicons name="remove-circle" size={20} color="blue" />
-                  </TouchableOpacity>
-                  <Text style={styles.textDefaultFont}> {count}</Text>
-                  <TouchableOpacity
-                    style={styles.icon}
-                    onPress={() => setCount(count + 1)}
-                  >
-                    <Ionicons name="add-circle" size={20} color="blue" />
-                  </TouchableOpacity>
-                </Text>
-                <Text style={styles.textDefaultFont}>Enter your orders: </Text>
-                <TextInput
-                  style={styles.textInput}
-                  value={text}
-                  placeholder="Chicken Rice"
-                  onChangeText={(input) => setText(input)}
-                />
-              </View>
-            </SectionContent>
-            <View>
-              <View style={styles.button}>
-                <Button
-                  onPress={() =>
-                    navigation.navigate("GroupBuyScreen", { text })
-                  }
-                  text="Submit "
-                  size="lg"
-                />
-              </View>
-            </View>
-          </Section>
-        </Layout>
-      </View>
-    );
+          setInitialized(true);
+        });
+    }
+  }, [initialized]);
+
+  function AddBuyerToDB() {
+    console.log(userInfo.name);
+    console.log(userDP);
+    console.log(order);
+    firestore
+      .collection("Orders")
+      .doc(orderID)
+      .collection("Buyers")
+      .add({
+        BuyerName: userInfo.name,
+        BuyerFace: userDP,
+        Remarks: order,
+      })
+      .then(() => {
+        firestore
+          .collection("Orders")
+          .doc(orderID)
+          .collection("Buyers")
+          .doc("dummy")
+          .delete();
+      })
+      .then(() => {
+        console.log("Data added");
+      });
+    alert("Added order to picker's list!");
+    navigation.goBack();
   }
+
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={shopInfo}
-        renderItem={renderItem}
-        style={{ width: "100%" }}
-        // keyExtractor={(item) => item.id.toString()}
-      />
+    <View
+      style={{
+        padding: 10,
+        paddingTop: 20,
+        paddingBottom: 20,
+        borderBottomColor: "#ccc",
+        borderBottomWidth: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+      }}
+    >
+      <TouchableOpacity onPress={() => deleteNote(orderID)}>
+        {/* <Ionicons name="trash" size={16} color="blue" /> */}
+      </TouchableOpacity>
+      <Layout>
+        {/* need to change to image */}
+        <Section>
+          <SectionImage source={{ uri: menu }} />
+          <SectionContent>
+            <View>
+              <Text>
+                <Text style={styles.textDefaultFont}>{shopName}</Text>
+              </Text>
+              <Text>
+                <Text style={styles.textDefaultFont}>{location}</Text>
+              </Text>
+
+              <Text>
+                <Text style={styles.textDefaultFont}>No. Food:</Text>
+                <TouchableOpacity
+                  style={styles.icon}
+                  onPress={() => setCount(count - 1)}
+                >
+                  <Ionicons name="remove-circle" size={20} color="blue" />
+                </TouchableOpacity>
+                <Text style={styles.textDefaultFont}> {count}</Text>
+                <TouchableOpacity
+                  style={styles.icon}
+                  onPress={() => setCount(count + 1)}
+                >
+                  <Ionicons name="add-circle" size={20} color="blue" />
+                </TouchableOpacity>
+              </Text>
+              <Text style={styles.textDefaultFont}>Enter your orders: </Text>
+              <TextInput
+                style={styles.textInput}
+                value={order}
+                placeholder="Chicken Rice"
+                onChangeText={(input) => setOrder(input)}
+              />
+            </View>
+          </SectionContent>
+          <View>
+            <View style={styles.button}>
+              <Button onPress={AddBuyerToDB} text="Submit " size="lg" />
+            </View>
+          </View>
+        </Section>
+      </Layout>
     </View>
   );
 }
@@ -148,5 +177,11 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     paddingEnd: 5,
     textAlign: "center",
+  },
+  image: {
+    flex: 1,
+    width: "100%",
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });
