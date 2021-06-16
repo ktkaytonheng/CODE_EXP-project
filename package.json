@@ -28,6 +28,7 @@
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
     "react-native-action-button": "^2.8.5",
+    "react-native-customisable-alert": "^0.1.18",
     "react-native-date-picker": "^3.3.1",
     "react-native-elements": "^3.4.2",
     "react-native-floating-action": "^1.21.0",
