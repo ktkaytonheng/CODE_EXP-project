@@ -19,42 +19,47 @@ import {
 export default function EditListDetailScreen({ navigation }) {
   const [details, setDetails] = useState([]);
   const [userID, setUserID] = useState([]);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         console.log("uid: " + user.uid);
         setUserID(user.uid);
+        setInitialized(true);
       }
     });
     return () => unsubscribe();
   }, []);
+
   useEffect(() => {
-    const unsubscribeArr = [];
-    firebase
-      .firestore()
-      .collection("Orders")
-      .where("pickerID", "==", userID)
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          const unsubscribe = doc.ref
-            .collection("Buyers")
-            .onSnapshot((collection) => {
-              const updatedDetails = collection.docs.map((doc) => {
-                return { id: doc.id, ...doc.data() };
+    if (initialized) {
+      const unsubscribeArr = [];
+      firebase
+        .firestore()
+        .collection("Orders")
+        .where("pickerID", "==", userID)
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            const unsubscribe = doc.ref
+              .collection("Buyers")
+              .onSnapshot((collection) => {
+                const updatedDetails = collection.docs.map((doc) => {
+                  return { id: doc.id, ...doc.data() };
+                });
+                setDetails(updatedDetails);
               });
-              setDetails(updatedDetails);
-            });
-          unsubscribeArr.push(unsubscribe);
+            unsubscribeArr.push(unsubscribe);
+          });
         });
-      });
-    return () => {
-      unsubscribeArr.forEach((unsubscribe) => {
-        unsubscribe();
-      });
-    };
-  }, []);
+      return () => {
+        unsubscribeArr.forEach((unsubscribe) => {
+          unsubscribe();
+        });
+      };
+    }
+  }, [initialized]);
 
   function deleteBuyer(buyerName) {
     //Delete buyer
