@@ -8,7 +8,7 @@ import {Picker} from '@react-native-picker/picker';
 export default function AddListScreen({ route }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const { shopName, shopMenu, shopLocation} = route.params;
-  const [paxes, setPax] = useState("");
+  const [paxes, setPax] = useState(1);
   const [timing, setTime] = useState(new Date().toLocaleString('en-GB', { timeZone: 'UTC' }));
 
   const showDatePicker = () => {
@@ -25,17 +25,10 @@ export default function AddListScreen({ route }) {
   };
 
   function increment() {
-    if (!timing.trim()) {
-      alert('Please Enter Time');
-      return;
-    }
-    if (!paxes.trim()) {
-      alert('Please Enter Pax');
-      return;
-    }
     firebase.firestore().collection("Orders").add({
-      pax: paxes,
-      picker: "currentUser",
+      currentPax: paxes,
+      maxPax: 2,
+      pickerID: "currentUser",
       shopID: shopName,
       time: timing,
     });
