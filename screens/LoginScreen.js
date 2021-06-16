@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image, Dimensions,ActivityIndicator } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Dimensions,
+  ActivityIndicator,
+} from "react-native";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
 import { LinearGradient } from "expo-linear-gradient";
@@ -16,18 +23,18 @@ export default function LoginScreen() {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const [errorText, setErrorText] = useState(" ");
-  const [errorTextColor, setErrorTextColor] = useState('red');
+  const [errorTextColor, setErrorTextColor] = useState("red");
   let history = useHistory();
 
-  const {width, height} = Dimensions.get("window");
+  const { width, height } = Dimensions.get("window");
 
   function SignIn(email, password) {
-    setErrorTextColor('green');
+    setErrorTextColor("green");
     setErrorText("Logging in...");
     auth.signInWithEmailAndPassword(email, password).catch((error) => {
       console.log(error.code);
       console.log(error.message);
-      setErrorTextColor('red');
+      setErrorTextColor("red");
       switch (error.code) {
         case "auth/invalid-email":
           setErrorText("Please type in an appropriate email");
@@ -62,10 +69,10 @@ export default function LoginScreen() {
   if (initializing) {
     return (
       <LinearGradient
-      colors={["#f9c449", "#e8a49c", "#e8a49c"]}
-      style={styles.container}
-    >
-        <ActivityIndicator size='large'/>
+        colors={["#f9c449", "#e8a49c", "#e8a49c"]}
+        style={styles.container}
+      >
+        <ActivityIndicator size="large" />
       </LinearGradient>
     );
   }
@@ -77,34 +84,57 @@ export default function LoginScreen() {
       style={styles.container}
     >
       <Image
-        style={{maxHeight: height, maxWidth: width}}
-        resizeMode='contain'
+        style={{ maxHeight: height, maxWidth: width }}
+        resizeMode="contain"
         source={require("../assets/FHlogo.png")}
       />
-      <TextInput
-        label="Email"
-        returnKeyType="next"
-        value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: "" })}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-      />
-      <TextInput
-        label="Password"
-        returnKeyType="done"
-        value={password.value}
-        onChangeText={(text) => setPassword({ value: text, error: "" })}
-        secureTextEntry
-      />
-      <Text style={{
-        color: errorTextColor,
-        fontSize: 15,
-        marginVertical: 10,
-        textAlign: 'left',
-        marginLeft: '7%'
-        }}>{errorText}</Text>
+      <View
+        style={{
+          width: "80%",
+        }}
+      >
+        <TextInput
+          label="Email"
+          returnKeyType="next"
+          value={email.value}
+          onChangeText={(text) => setEmail({ value: text, error: "" })}
+          autoCapitalize="none"
+          autoCompleteType="email"
+          textContentType="emailAddress"
+          keyboardType="email-address"
+        />
+      </View>
+      <View
+        style={{
+          width: "80%",
+        }}
+      >
+        <TextInput
+          label="Password"
+          returnKeyType="done"
+          value={password.value}
+          onChangeText={(text) => setPassword({ value: text, error: "" })}
+          secureTextEntry
+        />
+      </View>
+      <View
+        style={{
+          width: "80%",
+        }}
+      >
+        <Text
+          style={{
+            color: errorTextColor,
+            fontSize: 15,
+            marginVertical: 10,
+            textAlign: "left",
+            // marginLeft: "7%",
+          }}
+        >
+          {errorText}
+        </Text>
+      </View>
+
       <Button
         mode="contained"
         onPress={() => SignIn(email.value, password.value)}
@@ -122,7 +152,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
+    alignItems: "center",
     justifyContent: "center",
   },
 });

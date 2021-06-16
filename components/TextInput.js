@@ -3,13 +3,13 @@ import { View, StyleSheet, Text } from "react-native";
 import { TextInput as Input } from "react-native-paper";
 import { theme } from "../core/theme";
 
-export default function TextInput({ style, errorText, description, width, ...props }) {
+export default function TextInput({ style, errorText, description, ...props }) {
   return (
     <View style={styles.container}>
       <Input
         theme={{ colors: { primary: "black", underlineColor: "transparent" } }}
         {...props}
-        style={[styles.input, style]}
+        style={styles.input}
         mode="outlined"
       />
       {description && !errorText ? (
@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: theme.colors.surface,
-    width: '100%',
-    height: 35
+    width: "100%",
+    height: 35,
   },
   description: {
     fontSize: 13,

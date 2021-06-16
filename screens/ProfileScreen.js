@@ -15,15 +15,12 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
 import firebase from "../database/firebase";
 
-const auth = firebase.auth();
 const firestore = firebase.firestore();
+const auth = firebase.auth();
 const storage = firebase.storage();
 
-const wait = (timeout) => {
-  return new Promise((resolve) => setTimeout(resolve, timeout));
-};
-
 export default function HomeScreen() {
+  const [initialized, setInitialized] = useState(false);
   const [userID, setUserID] = useState("");
   // const [userInfo, setUserInfo] = useState({name: " ", email: " ", image: " "});
   const [email, setEmail] = useState("");
@@ -37,11 +34,6 @@ export default function HomeScreen() {
   const [refreshing, setRefreshing] = React.useState(false);
   const notInitialRender = useRef(false);
   let history = useHistory();
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
 
   function UploadImageToStorage(path, imageName) {
     let reference = storage.ref(imageName);
@@ -134,7 +126,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     if (userID && notInitialRender.current) {
-      const retrieveUserInfo = firestore
+      firestore
         .collection("Users")
         .doc(userID)
         .onSnapshot((docSnapshot) => {
@@ -146,26 +138,24 @@ export default function HomeScreen() {
           if (retrieved.phoneNo) setPhoneNo(retrieved.phoneNo);
           if (retrieved.image) setImage(retrieved.image);
           if (retrieved.address) setAddress(retrieved.address);
+          setInitialized(true);
         });
-      return () => retrieveUserInfo();
     } else {
       notInitialRender.current = true;
-      return;
     }
   }, [userID]);
 
   useEffect(() => {
-    const getUserDP = () => {
-      const url = storage
+    if (initialized) {
+      storage
         .ref(image)
         .getDownloadURL()
         .then((url) => {
           console.log("URL: " + url);
           setImageURL(url);
         });
-    };
-    return () => getUserDP();
-  }, [image]);
+    }
+  }, [initialized]);
 
   return (
     <View style={styles.container}>
@@ -313,7 +303,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   subcontainerTop: {
-    paddingTop: "20%",
+    paddingTop: "10%",
+    // paddingBottom: "10%",
     flex: 1,
     width: "100%",
     alignItems: "center",
@@ -330,8 +321,8 @@ const styles = StyleSheet.create({
     borderRadius: 250,
     borderColor: "black",
     borderWidth: 5,
-    height: 300,
-    width: 300,
+    height: 250,
+    width: 250,
   },
   // displayName: {
   //   fontSize: 40,

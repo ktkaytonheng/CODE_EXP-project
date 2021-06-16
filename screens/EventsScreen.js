@@ -24,11 +24,11 @@ export default function EventsScreen({ navigation, route }) {
       .onSnapshot((collection) => {
         const updatedShopInfo = collection.docs.map((doc) => doc.data());
         setShopInfo(updatedShopInfo);
-      })
+      });
 
-      return () => {
-        unsubscribe();
-      }
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   function addNote() {
@@ -39,10 +39,9 @@ export default function EventsScreen({ navigation, route }) {
   function deleteNote(id) {
     console.log("Deleting " + id);
     // To delete that item, we filter out the item we don't want
-    db
-      .firestore()
+    db.firestore()
       .collection(shopInfo)
-      .where('id', '==', id)
+      .where("id", "==", id)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => doc.ref.delete());
@@ -65,10 +64,7 @@ export default function EventsScreen({ navigation, route }) {
       >
         <Text>{item.shopName}</Text>
         <Text>{item.shopLocation}</Text>
-        <Image 
-          source={{uri:item.shopMenu}}
-          style={styles.listImage}
-        />
+        <Image source={{ uri: item.shopMenu }} style={styles.listImage} />
         <TouchableOpacity onPress={() => deleteNote(item.id)}>
           <Ionicons name="trash" size={16} color="#944" />
         </TouchableOpacity>
@@ -98,5 +94,5 @@ const styles = StyleSheet.create({
   listImage: {
     width: 50,
     height: 50,
-  }
+  },
 });

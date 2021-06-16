@@ -4,6 +4,7 @@ import {
   Text,
   View,
   FlatList,
+  TextInput,
   TouchableOpacity,
 } from "react-native";
 import { Layout, Button } from "react-native-rapi-ui";
@@ -11,12 +12,15 @@ import { Section, SectionContent, SectionImage } from "react-native-rapi-ui";
 import { createStackNavigator } from "@react-navigation/stack";
 import firebase from "../database/firebase";
 import { Ionicons } from "@expo/vector-icons";
+
 const db = firebase.firestore().collection("shopInfo");
 const Stack = createStackNavigator();
 
 export default function AddGroupBuy({ route, navigation }) {
   const [shopInfo, setShopInfo] = useState([]);
   const { newShopName } = route.params;
+  const [text, setText] = useState("");
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     const unsubscribeArr = [];
@@ -45,6 +49,15 @@ export default function AddGroupBuy({ route, navigation }) {
     };
   }, []);
 
+  useEffect(() => {
+    if (route.params?.text) {
+      const newNote = {
+        remarksItem: route.params.text,
+      };
+      // db.add(newNote);
+    }
+  }, [route.params?.text]);
+
   // The function to render each row in our FlatList
   function renderItem({ item }) {
     return (
@@ -60,7 +73,7 @@ export default function AddGroupBuy({ route, navigation }) {
         }}
       >
         <TouchableOpacity onPress={() => deleteNote(item.id)}>
-          <Ionicons name="trash" size={16} color="#944" />
+          <Ionicons name="trash" size={16} color="blue" />
         </TouchableOpacity>
         <Layout>
           {/* need to change to image */}
@@ -69,9 +82,7 @@ export default function AddGroupBuy({ route, navigation }) {
             <SectionContent>
               <View>
                 <Text>
-                  <Text>shop name: {JSON.stringify(newShopName)}</Text>
-
-                  <Text> Details:</Text>
+                  <Text> {newShopName}</Text>
                 </Text>
                 <Text>
                   {" "}
@@ -84,23 +95,40 @@ export default function AddGroupBuy({ route, navigation }) {
                 <Text>
                   {" "}
                   <Text>Available Pax:</Text>{" "}
+                  <TouchableOpacity
+                    style={styles.icon}
+                    onPress={() => setCount(count - 1)}
+                  >
+                    <Ionicons name="remove-circle" size={20} color="blue" />
+                  </TouchableOpacity>
+                  <Text> {count}</Text>
+                  <TouchableOpacity
+                    style={styles.icon}
+                    onPress={() => setCount(count + 1)}
+                  >
+                    <Ionicons name="add-circle" size={20} color="blue" />
+                  </TouchableOpacity>
                 </Text>
-                <Text> Add Orders:</Text>
-                <Text>{item.foodName}</Text>
-                <Text>{item.price}</Text>
+                <Text> Add Orders: </Text>
+                <TextInput
+                  style={styles.textInput}
+                  value={text}
+                  onChangeText={(input) => setText(input)}
+                />
               </View>
             </SectionContent>
             <View>
               <View style={styles.button}>
                 <Button
-                  onPress={() => navigation.navigate("GroupBuyScreen")}
+                  onPress={() =>
+                    navigation.navigate("GroupBuyScreen", { text })
+                  }
                   text="Submit "
                   size="lg"
                 />
               </View>
             </View>
           </Section>
-          
         </Layout>
       </View>
     );
@@ -126,5 +154,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     justifyContent: "center",
     textAlign: "center",
+  },
+
+  textInput: {
+    borderColor: "grey",
+    borderWidth: 1,
+    width: "80%",
+    padding: 10,
+    marginTop: 20,
+  },
+  icon: {
+    alignSelf: "flex-end",
+    paddingLeft: 5,
   },
 });

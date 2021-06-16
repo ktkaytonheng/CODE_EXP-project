@@ -5,11 +5,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
-import HomeScreen from "../screens/HomeScreen";
+import StallsScreen from "../screens/StallsScreen";
 import GroupBuyScreen from "../screens/GroupBuyScreen";
 import ListingScreen from "../screens/ListingScreen";
 import AddScreen from "../screens/AddScreen";
-import LoginScreen from "../screens/LoginScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -45,7 +44,7 @@ export default function TabNavigatorScreen() {
           inactiveTintColor: "gray",
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Home" component={StallsScreen} />
         <Tab.Screen name="Group buy" component={GroupBuyScreen} />
         <Tab.Screen name="Listing" component={ListingScreen} />
         <Tab.Screen name="Add place" component={AddScreen} />

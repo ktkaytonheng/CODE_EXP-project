@@ -18,22 +18,22 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState({ value: "", error: "" });
   const [confPassword, setConfPassword] = useState({ value: "", error: "" });
   const [errorText, setErrorText] = useState(" ");
-  const [errorTextColor, setErrorTextColor] = useState('red');
+  const [errorTextColor, setErrorTextColor] = useState("red");
   let history = useHistory();
 
-  const {width, height} = Dimensions.get("window");
+  const { width, height } = Dimensions.get("window");
 
   function Register(fullname, email, password, confPassword) {
-    setErrorTextColor('green');
+    setErrorTextColor("green");
     setErrorText("Creating account...");
     if (password != confPassword) {
-      setErrorTextColor('red');
+      setErrorTextColor("red");
       setErrorText("Passwords do not match");
       return;
     }
     auth.createUserWithEmailAndPassword(email, password).catch((error) => {
       console.log(error.code);
-      setErrorTextColor('red');
+      setErrorTextColor("red");
       switch (error.code) {
         case "auth/invalid-email":
           setErrorText("Invalid email");
@@ -74,49 +74,77 @@ export default function RegisterScreen() {
       <Image
         style={{
           maxHeight: height,
-          maxWidth: width
+          maxWidth: width,
         }}
-        resizeMode='contain'
+        resizeMode="contain"
         source={require("../assets/FHlogo.png")}
       />
-      <TextInput
-        label="Full Name"
-        returnKeyType="next"
-        value={fullname.value}
-        onChangeText={(text) => setFullname({ value: text, error: "" })}
-        autoCapitalize="none"
-      />
-      <TextInput
-        label="Email"
-        returnKeyType="next"
-        value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: "" })}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-      />
-      <TextInput
-        label="Password"
-        returnKeyType="done"
-        value={password.value}
-        onChangeText={(text) => setPassword({ value: text, error: "" })}
-        secureTextEntry
-      />
-      <TextInput
-        label="Confirm Password"
-        returnKeyType="done"
-        value={confPassword.value}
-        onChangeText={(text) => setConfPassword({ value: text, error: "" })}
-        secureTextEntry
-      />
-      <Text style={{
-        color: errorTextColor,
-        fontSize: 15,
-        marginVertical: 10,
-        textAlign: 'left',
-        marginLeft: '7%'
-        }}>{errorText}</Text>
+      <View
+        style={{
+          width: "80%",
+        }}
+      >
+        <TextInput
+          label="Full Name"
+          returnKeyType="next"
+          value={fullname.value}
+          onChangeText={(text) => setFullname({ value: text, error: "" })}
+          autoCapitalize="none"
+        />
+      </View>
+      <View
+        style={{
+          width: "80%",
+        }}
+      >
+        <TextInput
+          label="Email"
+          returnKeyType="next"
+          value={email.value}
+          onChangeText={(text) => setEmail({ value: text, error: "" })}
+          autoCapitalize="none"
+          autoCompleteType="email"
+          textContentType="emailAddress"
+          keyboardType="email-address"
+        />
+        <TextInput
+          label="Password"
+          returnKeyType="done"
+          value={password.value}
+          onChangeText={(text) => setPassword({ value: text, error: "" })}
+          secureTextEntry
+        />
+      </View>
+      <View
+        style={{
+          width: "80%",
+        }}
+      >
+        <TextInput
+          label="Confirm Password"
+          returnKeyType="done"
+          value={confPassword.value}
+          onChangeText={(text) => setConfPassword({ value: text, error: "" })}
+          secureTextEntry
+        />
+      </View>
+      <View
+        style={{
+          width: "80%",
+        }}
+      >
+        <Text
+          style={{
+            color: errorTextColor,
+            fontSize: 15,
+            marginVertical: 10,
+            textAlign: "left",
+          }}
+        >
+          {errorText}
+        </Text>
+      </View>
+
       <Button
         mode="contained"
         onPress={() =>
@@ -141,7 +169,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
+    alignItems: "center",
     justifyContent: "center",
   },
 });
