@@ -83,22 +83,7 @@ function GroupBuyScreen({ navigation }) {
             />
           </ImageBackground>
         </View>
-        <ActionButton buttonColor="#2e64e5">
-          <ActionButton.Item
-            buttonColor="#9b59b6"
-            title="View My Current Orders"
-            onPress={() => navigation.navigate("ViewOrdersScreen")}
-          >
-            <Icon name="camera-outline" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item
-            buttonColor="#3498db"
-            title="Dabao for others"
-            onPress={() => navigation.navigate("GroupBuyGroupScreen")}
-          >
-            <Icon name="md-images-outline" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-        </ActionButton>
+      
       </View>
     );
   }
@@ -115,6 +100,24 @@ function GroupBuyScreen({ navigation }) {
         renderItem={renderItem}
         // keyExtractor={(item) => item.id.toString()}
       />
+
+        
+<ActionButton buttonColor="#2e64e5">
+          <ActionButton.Item
+            buttonColor="#9b59b6"
+            title="View My Current Orders"
+            onPress={() => navigation.navigate("ViewOrdersScreen")}
+          >
+            <Icon name="camera-outline" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item
+            buttonColor="#3498db"
+            title="Dabao for others"
+            onPress={() => navigation.navigate("GroupBuyGroupScreen")}
+          >
+            <Icon name="md-images-outline" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+        </ActionButton>
     </View>
   );
 }

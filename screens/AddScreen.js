@@ -99,6 +99,7 @@ function ImagePickerExample({ navigation }) {
   return (
 
     <View style={styles.container}>
+
     <ScrollView
     showsVerticalScrollIndicator={false}>
     <View style={styles.container}>
@@ -128,6 +129,8 @@ function ImagePickerExample({ navigation }) {
       />
       </View>
     </ScrollView>
+
+
       <ActionButton buttonColor="#2e64e5">
         <ActionButton.Item
           buttonColor="#9b59b6"
@@ -142,6 +145,8 @@ function ImagePickerExample({ navigation }) {
           <Icon name="md-images-outline" style={styles.actionButtonIcon} />
         </ActionButton.Item>
       </ActionButton>
+
+
     </View>
   );
 }
@@ -155,7 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   container: {
-    paddingTop: 70,
+    paddingTop: 20,
     paddingBottom: 30,
     alignItems: 'center',
     flex: 1,
