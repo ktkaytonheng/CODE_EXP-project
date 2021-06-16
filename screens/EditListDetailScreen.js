@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import firebase from "../database/firebase";
-
-const db = firebase.firestore().collection("Listing");
+const auth = firebase.auth();
+import { Ionicons } from "@expo/vector-icons";
 
 import {
   StyleSheet,
   Text,
   View,
+  Image,
   TouchableOpacity,
   FlatList,
   Button,
@@ -16,21 +17,72 @@ import {
 } from "react-native";
 
 export default function EditListDetailScreen({ navigation }) {
-  const [remarks, setRemarks] = useState([]);
+  const [details, setDetails] = useState([]);
+  const [userID, setUserID] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = firebase
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log("uid: " + user.uid);
+        setUserID(user.uid);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+  useEffect(() => {
+    const unsubscribeArr = [];
+    firebase
       .firestore()
-      .collection("Listing")
-      .onSnapshot((collection) => {
-        const updatedRemarks = collection.docs.map((doc) => doc.data());
-        setRemarks(updatedRemarks);
+      .collection("Orders")
+      .where("pickerID", "==", "userID")
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          const unsubscribe = doc.ref
+            .collection("Buyers")
+            .onSnapshot((collection) => {
+              const updatedDetails = collection.docs.map((doc) => {
+                return { id: doc.id, ...doc.data() };
+              });
+              setDetails(updatedDetails);
+            });
+          unsubscribeArr.push(unsubscribe);
+        });
       });
-
     return () => {
-      unsubscribe();
+      unsubscribeArr.forEach((unsubscribe) => {
+        unsubscribe();
+      });
     };
   }, []);
+
+  function deleteBuyer(buyerName) {
+    //Delete buyer
+    const unsubscribeArr = [];
+    firebase
+      .firestore()
+      .collection("Orders")
+      .where("pickerID", "==", "userID")
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          const unsubscribe = doc.ref
+            .collection("Buyers")
+            .where("BuyerName", "==", buyerName)
+            .get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => doc.ref.delete());
+            });
+
+          unsubscribeArr.push(unsubscribe);
+        });
+      });
+    return () => {
+      unsubscribeArr.forEach((unsubscribe) => {
+        unsubscribe();
+      });
+    };
+  }
 
   // The function to render each row in our FlatList
   function renderItem({ item }) {
@@ -39,18 +91,43 @@ export default function EditListDetailScreen({ navigation }) {
         style={{
           borderBottomColor: "#ccc",
           borderBottomWidth: 2,
+          flexDirection: "row",
+          padding: 10,
         }}
       >
-        <Text style={[styles.customerName]}>{item.Customer}</Text>
-        <Text style={[styles.customerRemark]}>{item.Remarks}</Text>
+        <View>
+          <Text style={[styles.customerName]}>{item.BuyerName}</Text>
+          <Image style={styles.buyerFace} source={{ uri: item.BuyerFace }} />
+        </View>
+
+        <View
+          style={{
+            justifyContent: "center",
+          }}
+        >
+          <Text style={[styles.customerRemark]}>{item.Remarks}</Text>
+        </View>
+
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            padding: 10,
+          }}
+        >
+          <TouchableOpacity onPress={() => deleteBuyer(item.BuyerName)}>
+            <Ionicons name="trash" size={20} color="#944" />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
-
   return (
     <View style={styles.container}>
       <FlatList
-        data={remarks}
+        data={details}
         renderItem={renderItem}
         style={{ width: "100%" }}
         keyExtractor={(item) => item.id.toString()}
@@ -83,20 +160,30 @@ const styles = StyleSheet.create({
 
   customerName: {
     fontSize: 15,
-    textAlign: "left",
+    textAlign: "center",
     color: "black",
     padding: 10,
     paddingLeft: 20,
     top: 1,
   },
-
   customerRemark: {
-    fontSize: 12,
+    fontSize: 15,
     textAlign: "left",
     color: "black",
-    paddingTop: 25,
-    paddingBottom: 50,
-    paddingLeft: 120,
+    paddingTop: 10,
+    marginVertical: 10,
+    paddingBottom: 0,
+    paddingLeft: 20,
     paddingRight: 10,
+    justifyContent: "center",
+  },
+
+  buyerFace: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 10,
   },
 });
