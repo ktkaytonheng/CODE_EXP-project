@@ -34,7 +34,7 @@ export default function EditListDetailScreen({ navigation }) {
     firebase
       .firestore()
       .collection("Orders")
-      .where("pickerID", "==", "userID")
+      .where("pickerID", "==", userID)
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -62,7 +62,7 @@ export default function EditListDetailScreen({ navigation }) {
     firebase
       .firestore()
       .collection("Orders")
-      .where("pickerID", "==", "userID")
+      .where("pickerID", "==", userID)
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
