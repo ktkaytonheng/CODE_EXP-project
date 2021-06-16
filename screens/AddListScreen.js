@@ -66,7 +66,7 @@ export default function AddListScreen({ navigation, route }) {
         .collection("Orders")
         .add({
           currentPax: 0,
-          maxPax: parseInt(paxes),
+          maxPax: paxes,
           pickerID: userID,
           shopID: shopID,
           time: timing,
@@ -99,7 +99,7 @@ export default function AddListScreen({ navigation, route }) {
           shopMenu: shopMenu,
           shopLocation: shopLocation,
           shopName: shopName,
-          time: timing,
+          time: timing.toLocaleString('en-GB', { timeZone: 'UTC' }),
         })
         .then((docRef) => {
           console.log(docRef.id);
