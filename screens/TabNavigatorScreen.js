@@ -7,7 +7,7 @@ import TextInput from "../components/TextInput";
 import Button from "../components/Button";
 import StallsScreen from "../screens/StallsScreen";
 import GroupBuyScreen from "../screens/GroupBuyScreen";
-import ListingScreen from "../screens/ListingScreen";
+// import ListingScreen from "../screens/ListingScreen";
 import AddScreen from "../screens/AddScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
