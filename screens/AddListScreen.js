@@ -11,7 +11,10 @@ import {
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import firebase from "../database/firebase";
+import { LinearGradient } from "expo-linear-gradient";
 import { Picker } from "@react-native-picker/picker";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+// import Button from "../components/Button";
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
@@ -22,6 +25,7 @@ export default function AddListScreen({ navigation, route }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const { shopName, shopMenu, shopLocation, shopID } = route.params;
   const [userID, setUserID] = useState();
+  const [userDP, setUserDP] = useState();
   const [paxes, setPax] = useState(1);
   const [timing, setTime] = useState(new Date());
 
@@ -57,37 +61,14 @@ export default function AddListScreen({ navigation, route }) {
         .onSnapshot((docRef) => {
           const retrievedUserInfo = { ...docRef.data() };
           setUserInfo(retrievedUserInfo);
+          if (retrievedUserInfo.image != null || retrieved.image != " ")
+            setUserDP(retrievedUserInfo.image);
+          else setUserDP("/images/defaultdp.png");
         });
     }
   }, [initialized]);
 
-  function AddOrderToDB() {
-    firestore
-      .collection("Orders")
-      .add({
-        currentPax: 0,
-        maxPax: paxes,
-        pickerID: userID,
-        shopID: shopID,
-        time: timing,
-      })
-      .then((docRef) => {
-        console.log(docRef.id);
-        firestore
-          .collection("Orders")
-          .doc(docRef.id)
-          .collection("Buyers")
-          .doc("dummy")
-          .set({
-            1: "1",
-          });
-      });
-
-    alert("Order posted successfully!");
-    navigation.goBack();
-  }
-
-  onDeleteBTN = () => {
+  const onDeleteBTN = () => {
     firestore
       .collection("Orders")
       .add({
@@ -95,7 +76,7 @@ export default function AddListScreen({ navigation, route }) {
         maxPax: parseInt(paxes),
         pickerID: userID,
         pickerName: userInfo.name,
-        // pickerPic: userInfo.image,
+        pickerPic: userInfo.image,
         shopMenu: shopMenu,
         shopLocation: shopLocation,
         shopName: shopName,
@@ -124,26 +105,40 @@ export default function AddListScreen({ navigation, route }) {
         onPress: () => console.log("Cancel Pressed"),
         style: "cancel",
       },
-      { text: "OK", onPress: this.onDeleteBTN },
+      { text: "OK", onPress: onDeleteBTN },
     ]);
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={{ margin: 3, textAlign: "center" }}>{shopName}</Text>
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
-        <Image style={styles.image} source={{ uri: shopMenu }} />
-        {/*<Text style={{fontSize: 20}}>Add List</Text>*/}
-      </View>
+    <LinearGradient
+      colors={["#f9c449", "#e8a49c", "#e8a49c"]}
+      style={styles.container}
+    >
       <View
         style={{
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
-          marginStart: "20%",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "20%",
+          marginVertical: "10%",
+          marginBottom: "20%",
+          backgroundColor: "'rgba(255,255,255,0.3)'",
         }}
       >
+        <Text
+          style={{
+            marginTop: 10,
+            textAlign: "center",
+            fontSize: 30,
+          }}
+        >
+          {shopName}
+        </Text>
+        <Image style={styles.image} source={{ uri: shopMenu }} />
         <Text style={styles.text}>Stall Location</Text>
-        <Text style={styles.textArea}>{shopLocation}</Text>
+        <View style={styles.textArea}>
+          <Text style={styles.text}>{shopLocation}</Text>
+        </View>
+
         <Text style={styles.text}>Enter time</Text>
         <Button
           style={styles.textArea}
@@ -161,6 +156,7 @@ export default function AddListScreen({ navigation, route }) {
           style={styles.pickerStyle}
           selectedValue={paxes}
           onValueChange={(itemValue, itemIndex) => setPax(itemValue)}
+          itemStyle={{ height: "100%", color: "blue" }}
         >
           <Picker.Item label="1" value="1" />
           <Picker.Item label="2" value="2" />
@@ -172,11 +168,31 @@ export default function AddListScreen({ navigation, route }) {
           <Picker.Item label="8" value="8" />
           <Picker.Item label="9" value="9" />
         </Picker>
-        <TouchableOpacity style={styles.submit} onPress={increment}>
-          <Text style={styles.button}>Submit</Text>
-        </TouchableOpacity>
+        <View
+          style={{
+            // width: "100%",
+            justifyContent: "flex-end",
+            // alignItems: "center",
+            alignSelf: "center",
+            // backgroundColor: "pink",
+          }}
+        >
+          <TouchableOpacity style={styles.button} onPress={increment}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                // backgroundColor: 'pink',
+              }}
+            >
+              <FontAwesome name="check-circle" size="20" color="green" />
+              <Text style={styles.buttonText}>Submit</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -185,26 +201,29 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "stretch",
     justifyContent: "center",
+    paddingTop: "10%",
   },
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 40,
+    width: 250,
+    height: 250,
+    borderRadius: 20,
+    marginVertical: 10,
     justifyContent: "center",
     alignItems: "center",
   },
   textArea: {
     justifyContent: "center",
     alignItems: "center",
-    width: "75%",
-    padding: 15,
-    margin: 2,
+    // width: "75%",
+    height: 30,
+    paddingHorizontal: 10,
+    margin: 10,
     borderColor: "grey",
     borderWidth: 1,
   },
   text: {
-    marginTop: 5,
+    // marginTop:
+    textAlign: "center",
   },
   submit: {
     height: 40,
@@ -218,14 +237,26 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   button: {
-    textAlign: "center",
-    color: "white",
+    width: "100%",
+    height: 40,
+    // alignItems: 'center',
+    justifyContent: "center",
+    // marginBottom: 36,
+    // justifyContent: 'flex-end',
+    backgroundColor: "pink",
+  },
+  buttonText: {
+    color: "black",
+    fontSize: 20,
+    marginHorizontal: 10,
   },
   pickerStyle: {
-    width: "80%",
+    width: "40%",
     color: "black",
+    // backgroundColor: 'black',
     justifyContent: "center",
-    borderWidth: 20,
-    borderColor: "black",
+    // borderWidth: 0,
+    // borderColor: "white",
+    height: "15%%",
   },
 });

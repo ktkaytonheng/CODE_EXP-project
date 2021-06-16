@@ -85,7 +85,7 @@ function GroupBuyScreen({ navigation }) {
       colors={["#f9c449", "#e8a49c", "#e8a49c"]}
       style={styles.container}
     >
-      <FlatList data={orders} renderItem={renderItem} />
+      <FlatList data={orders} renderItem={renderItem} style={{}} />
 
       {/* <ActionButton buttonColor="#2e64e5">
         <ActionButton.Item
@@ -142,7 +142,6 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // justifyContent: "center",
   },
-  container2: {},
   button: {
     margin: 5,
     backgroundColor: "blue",
@@ -178,6 +177,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     height: 200,
+    backgroundColor: "rgba(255,255,255,0.6)",
   },
   image: {
     flex: 1,

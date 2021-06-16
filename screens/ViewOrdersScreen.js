@@ -18,7 +18,8 @@ export default function ViewOrdersScreen({ navigation }) {
         <Image
           style={{ width: 300, height: 200, backgroundColor: "red" }}
           source={{
-            uri: "https://www.seriouseats.com/thmb/aU0v8MOtgRKLuru3HN3wC_f2a-s=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__images__2011__09__20110906-singapore-primary-f061d429515a4aba8f52827545951f78.jpg",
+            uri:
+              "https://www.seriouseats.com/thmb/aU0v8MOtgRKLuru3HN3wC_f2a-s=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__images__2011__09__20110906-singapore-primary-f061d429515a4aba8f52827545951f78.jpg",
           }}
           resizeMode="contain"
         />
