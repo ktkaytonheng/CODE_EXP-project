@@ -110,10 +110,7 @@ export default function AddListScreen({ navigation, route }) {
   }
 
   return (
-    <LinearGradient
-      colors={["#f9c449", "#e8a49c", "#e8a49c"]}
-      style={styles.container}
-    >
+    <LinearGradient colors={["#ffc", "#ffc", "#ffc"]} style={styles.container}>
       <View
         style={{
           alignItems: "center",
@@ -121,7 +118,7 @@ export default function AddListScreen({ navigation, route }) {
           padding: "20%",
           marginVertical: "10%",
           marginBottom: "20%",
-          backgroundColor: "'rgba(255,255,255,0.3)'",
+          // backgroundColor: "'rgba(255,255,255,0.3)'",
         }}
       >
         <Text
@@ -243,7 +240,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     // marginBottom: 36,
     // justifyContent: 'flex-end',
-    backgroundColor: "pink",
+    // backgroundColor: "pink",
   },
   buttonText: {
     color: "black",

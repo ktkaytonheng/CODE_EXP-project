@@ -83,10 +83,7 @@ function GroupBuyScreen({ navigation }) {
   }
 
   return (
-    <LinearGradient
-      colors={["#f9c449", "#e8a49c", "#e8a49c"]}
-      style={styles.container}
-    >
+    <LinearGradient colors={["#ffc", "#ffc", "#ffc"]} style={styles.container}>
       <FlatList
         data={orders}
         renderItem={renderItem}
@@ -185,7 +182,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     height: 200,
-    backgroundColor: "rgba(255,255,255,0.6)",
+    // backgroundColor: "rgba(255,255,255,0.6)",
   },
   image: {
     flex: 1,

@@ -203,10 +203,7 @@ function ImagePickerExample({ navigation }) {
   };
 
   return (
-    <LinearGradient
-      colors={["#f9c449", "#e8a49c", "#e8a49c"]}
-      style={styles.container}
-    >
+    <LinearGradient colors={["#ffc", "#ffc", "#ffc"]} style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles.container1}>

@@ -71,10 +71,7 @@ function StallsScreen({ navigation }) {
   }
 
   return (
-    <LinearGradient
-      colors={["#f9c449", "#e8a49c", "#e8a49c"]}
-      style={styles.container}
-    >
+    <LinearGradient colors={["#ffc", "#ffc", "#ffc"]} style={styles.container}>
       <SectionGrid
         itemDimension={130}
         // staticDimension={300}
