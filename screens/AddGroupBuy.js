@@ -100,7 +100,7 @@ export default function AddGroupBuy({ route, navigation }) {
               </View>
             </View>
           </Section>
-          ;
+          
         </Layout>
       </View>
     );

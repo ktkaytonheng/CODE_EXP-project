@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
 import { LinearGradient } from "expo-linear-gradient";
@@ -18,15 +18,22 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState({ value: "", error: "" });
   const [confPassword, setConfPassword] = useState({ value: "", error: "" });
   const [errorText, setErrorText] = useState(" ");
+  const [errorTextColor, setErrorTextColor] = useState('red');
   let history = useHistory();
 
+  const {width, height} = Dimensions.get("window");
+
   function Register(fullname, email, password, confPassword) {
+    setErrorTextColor('green');
+    setErrorText("Creating account...");
     if (password != confPassword) {
+      setErrorTextColor('red');
       setErrorText("Passwords do not match");
       return;
     }
     auth.createUserWithEmailAndPassword(email, password).catch((error) => {
       console.log(error.code);
+      setErrorTextColor('red');
       switch (error.code) {
         case "auth/invalid-email":
           setErrorText("Invalid email");
@@ -42,23 +49,21 @@ export default function RegisterScreen() {
           return;
       }
     });
-    firestore.collection("Users").add({
-      name: fullname,
-      email: email,
-      picture: "../assets/defaultdp.png",
-    });
   }
 
   useEffect(() => {
     const subscriber = auth.onAuthStateChanged((user) => {
       setUser(user);
       if (user) {
-        console.log(user.email);
+        firestore.collection("Users").doc(user.uid).set({
+          name: fullname.value,
+          email: email.value,
+        });
         console.log("Successful login");
         history.push("/home");
       }
     });
-    return subscriber;
+    return () => subscriber();
   });
 
   return (
@@ -67,7 +72,11 @@ export default function RegisterScreen() {
       style={styles.container}
     >
       <Image
-        style={styles.titleLogo}
+        style={{
+          maxHeight: height,
+          maxWidth: width
+        }}
+        resizeMode='contain'
         source={require("../assets/FHlogo.png")}
       />
       <TextInput
@@ -101,7 +110,13 @@ export default function RegisterScreen() {
         onChangeText={(text) => setConfPassword({ value: text, error: "" })}
         secureTextEntry
       />
-      <Text style={styles.errorText}>{errorText}</Text>
+      <Text style={{
+        color: errorTextColor,
+        fontSize: 15,
+        marginVertical: 10,
+        textAlign: 'left',
+        marginLeft: '7%'
+        }}>{errorText}</Text>
       <Button
         mode="contained"
         onPress={() =>
@@ -126,17 +141,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
+    // alignItems: "center",
     justifyContent: "center",
-  },
-  titleLogo: {
-    width: 600,
-    height: 250,
-    marginBottom: 50,
-  },
-  errorText: {
-    color: "red",
-    fontSize: 20,
-    marginBottom: 10,
   },
 });

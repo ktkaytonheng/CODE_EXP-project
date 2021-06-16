@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Dimensions,ActivityIndicator } from "react-native";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
 import { LinearGradient } from "expo-linear-gradient";
@@ -16,12 +16,18 @@ export default function LoginScreen() {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const [errorText, setErrorText] = useState(" ");
+  const [errorTextColor, setErrorTextColor] = useState('red');
   let history = useHistory();
 
+  const {width, height} = Dimensions.get("window");
+
   function SignIn(email, password) {
+    setErrorTextColor('green');
+    setErrorText("Logging in...");
     auth.signInWithEmailAndPassword(email, password).catch((error) => {
       console.log(error.code);
       console.log(error.message);
+      setErrorTextColor('red');
       switch (error.code) {
         case "auth/invalid-email":
           setErrorText("Please type in an appropriate email");
@@ -49,15 +55,18 @@ export default function LoginScreen() {
       }
       setInitializing(false);
     });
-    return subscriber;
+    return () => subscriber();
   });
 
   // Loading screen
   if (initializing) {
     return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
-      </View>
+      <LinearGradient
+      colors={["#f9c449", "#e8a49c", "#e8a49c"]}
+      style={styles.container}
+    >
+        <ActivityIndicator size='large'/>
+      </LinearGradient>
     );
   }
 
@@ -68,7 +77,8 @@ export default function LoginScreen() {
       style={styles.container}
     >
       <Image
-        style={styles.titleLogo}
+        style={{maxHeight: height, maxWidth: width}}
+        resizeMode='contain'
         source={require("../assets/FHlogo.png")}
       />
       <TextInput
@@ -88,7 +98,13 @@ export default function LoginScreen() {
         onChangeText={(text) => setPassword({ value: text, error: "" })}
         secureTextEntry
       />
-      <Text style={styles.errorText}>{errorText}</Text>
+      <Text style={{
+        color: errorTextColor,
+        fontSize: 15,
+        marginVertical: 10,
+        textAlign: 'left',
+        marginLeft: '7%'
+        }}>{errorText}</Text>
       <Button
         mode="contained"
         onPress={() => SignIn(email.value, password.value)}
@@ -106,17 +122,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
+    // alignItems: "center",
     justifyContent: "center",
-  },
-  titleLogo: {
-    width: 600,
-    height: 250,
-    marginBottom: 50,
-  },
-  errorText: {
-    color: "red",
-    fontSize: 20,
-    marginBottom: 10,
   },
 });

@@ -13,7 +13,7 @@ export default function ListingScreen() {
       }}
     >
       <Text>Home!</Text>
-      <FontAwesome name="glass" size={99} color="rgba(255, 255, 0, 0.5)" />
+      {/* <FontAwesome name="glass" size={99} color="rgba(255, 255, 0, 0.5)" /> */}
     </View>
   );
 }
