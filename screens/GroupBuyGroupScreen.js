@@ -11,6 +11,7 @@ import {
 const GroupBuyGroupScreen = ({ navigation }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [text, setText] = useState("");
+  const [time, setTime] = useState("");
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -19,8 +20,9 @@ const GroupBuyGroupScreen = ({ navigation }) => {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = (date) => {
-    console.warn("A date has been picked: ", date);
+  const handleConfirm = (time) => {
+    setTime(time);
+    console.warn("A time has been picked: ", time);
     hideDatePicker();
   };
 
@@ -42,6 +44,7 @@ const GroupBuyGroupScreen = ({ navigation }) => {
           onCancel={hideDatePicker}
         />
       </View>
+      <Text> Time picked : {JSON.stringify(time)}</Text>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity

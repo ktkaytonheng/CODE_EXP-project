@@ -104,16 +104,18 @@ function GroupBuyScreen({ navigation }) {
   }
 
   return (
-    <FlatGrid
-      itemDimension={"2"}
-      data={shopInfo}
-      style={styles.gridView}
-      // staticDimension={300}
-      // fixed
-      spacing={10}
-      renderItem={renderItem}
-      // keyExtractor={(item) => item.id.toString()}
-    />
+    <View style={styles.container}>
+      <FlatGrid
+        itemDimension={"2"}
+        data={shopInfo}
+        style={styles.gridView}
+        // staticDimension={300}
+        // fixed
+        spacing={10}
+        renderItem={renderItem}
+        // keyExtractor={(item) => item.id.toString()}
+      />
+    </View>
   );
 }
 
