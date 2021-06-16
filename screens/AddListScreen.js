@@ -9,7 +9,7 @@ export default function AddListScreen({ route }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const { shopName, shopMenu, shopLocation} = route.params;
   const [paxes, setPax] = useState(1);
-  const [timing, setTime] = useState(new Date().toLocaleString('en-GB', { timeZone: 'UTC' }));
+  const [timing, setTime] = useState(new Date());
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -20,11 +20,16 @@ export default function AddListScreen({ route }) {
   };
 
   const handleConfirm = (date) => {
-    setTime(date.toLocaleString('en-GB', { timeZone: 'UTC' }));
+    setTime(date);
+    console.warn(date);
     hideDatePicker();
   };
 
   function increment() {
+    if(parseInt(paxes) === 0){
+      alert('Please Enter Pax');
+      return;
+    }
     firebase.firestore().collection("Orders").add({
       currentPax: parseInt("0"),
       maxPax: parseInt(paxes),
@@ -43,10 +48,10 @@ export default function AddListScreen({ route }) {
         {/*<Text style={{fontSize: 20}}>Add List</Text>*/}
       </View>
         <View style={{alignItems:"flex-start", justifyContent: 'flex-start', marginStart:"20%"}}>
-          <Text style={styles.text}>Stall Location</Text>
+          <Text style={styles.text}>Stall </Text>
           <Text style={styles.textArea}>{shopLocation}</Text>
           <Text style={styles.text}>Enter time</Text>
-          <Button style={styles.textArea} title={timing} onPress={showDatePicker} />
+          <Button style={styles.textArea} title={timing.toLocaleString('en-GB', { timeZone: 'UTC' }).toString()} onPress={showDatePicker} />
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="time"
@@ -57,7 +62,6 @@ export default function AddListScreen({ route }) {
           <Picker
             style={styles.pickerStyle} 
             selectedValue={paxes}
-            style={{ height: 50, width: 150 }}
             onValueChange={(itemValue, itemIndex) => setPax(itemValue)}
           >
             <Picker.Item label="1" value="1" />
@@ -119,11 +123,10 @@ const styles = StyleSheet.create({
     color: "white",
   },
   pickerStyle:{  
-    width: "80%",  
-    color: 'red',  
-    justifyContent: 'center',
-    color: "red",  
+    width: "80%", 
+    color: "black", 
+    justifyContent: 'center', 
     borderWidth: 20,
-    borderColor: "black"
+    borderColor: "red",
   },
 });
