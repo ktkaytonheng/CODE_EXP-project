@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
+  Alert
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import firebase from "../database/firebase";
@@ -22,9 +23,7 @@ export default function AddListScreen({ navigation, route }) {
   const { shopName, shopMenu, shopLocation, shopID } = route.params;
   const [userID, setUserID] = useState();
   const [paxes, setPax] = useState(1);
-  const [timing, setTime] = useState(
-    new Date().toLocaleString("en-GB", { timeZone: "UTC" })
-  );
+  const [timing, setTime] = useState(new Date());
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -35,7 +34,7 @@ export default function AddListScreen({ navigation, route }) {
   };
 
   const handleConfirm = (date) => {
-    setTime(date.toLocaleString("en-GB", { timeZone: "UTC" }));
+    setTime(date);
     hideDatePicker();
   };
 
@@ -63,12 +62,37 @@ export default function AddListScreen({ navigation, route }) {
   }, [initialized]);
 
   function AddOrderToDB() {
-    if (initialized) {
       firestore
         .collection("Orders")
         .add({
           currentPax: 0,
-          maxPax: paxes,
+          maxPax: parseInt(paxes),
+          pickerID: userID,
+          shopID: shopID,
+          time: timing,
+        })
+        .then((docRef) => {
+          console.log(docRef.id);
+          firestore
+            .collection("Orders")
+            .doc(docRef.id)
+            .collection("Buyers")
+            .doc("dummy")
+            .set({
+              1: "1",
+            });
+        });
+
+      alert("Order posted successfully!");
+      navigation.goBack();
+  }
+
+  onDeleteBTN = () => {
+    firestore
+        .collection("Orders")
+        .add({
+          currentPax: 0,
+          maxPax: parseInt(paxes),
           pickerID: userID,
           pickerName: userInfo.name,
           // pickerPic: userInfo.image,
@@ -91,7 +115,21 @@ export default function AddListScreen({ navigation, route }) {
 
       alert("Order posted successfully!");
       navigation.goBack();
-    }
+  };
+
+  function increment() {
+    Alert.alert(
+      "Confirmation",
+      "Are the details correct?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        {text: 'OK', onPress: this.onDeleteBTN},
+      ]
+    );
   }
 
   return (
@@ -113,7 +151,7 @@ export default function AddListScreen({ navigation, route }) {
         <Text style={styles.text}>Enter time</Text>
         <Button
           style={styles.textArea}
-          title={timing}
+          title={timing.toLocaleString('en-GB', { timeZone: 'UTC' }).toString()}
           onPress={showDatePicker}
         />
         <DateTimePickerModal
@@ -126,7 +164,6 @@ export default function AddListScreen({ navigation, route }) {
         <Picker
           style={styles.pickerStyle}
           selectedValue={paxes}
-          style={{ height: 50, width: 150 }}
           onValueChange={(itemValue, itemIndex) => setPax(itemValue)}
         >
           <Picker.Item label="1" value="1" />
@@ -139,7 +176,7 @@ export default function AddListScreen({ navigation, route }) {
           <Picker.Item label="8" value="8" />
           <Picker.Item label="9" value="9" />
         </Picker>
-        <TouchableOpacity style={styles.submit} onPress={AddOrderToDB}>
+        <TouchableOpacity style={styles.submit} onPress={increment}>
           <Text style={styles.button}>Submit</Text>
         </TouchableOpacity>
       </View>
@@ -174,6 +211,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   submit: {
+    height: 40,
     width: "75%",
     padding: 4,
     margin: 10,
@@ -189,9 +227,8 @@ const styles = StyleSheet.create({
   },
   pickerStyle: {
     width: "80%",
-    color: "red",
+    color: "black",
     justifyContent: "center",
-    color: "red",
     borderWidth: 20,
     borderColor: "black",
   },
