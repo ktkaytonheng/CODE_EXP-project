@@ -6,17 +6,22 @@ import {
   TouchableOpacity,
   FlatList,
   ImageBackground,
+  TextInput,
 } from "react-native";
 import { Layout, Section, SectionContent } from "react-native-rapi-ui";
 import { Button } from "react-native-rapi-ui";
-import { FlatGrid } from 'react-native-super-grid';
+import { FlatGrid } from "react-native-super-grid";
 import AddGroupBuy from "./AddGroupBuy";
+import GroupBuyGroupScreen from "./GroupBuyGroupScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import ViewOrdersScreen from "./ViewOrdersScreen";
 const Stack = createStackNavigator();
 import { Ionicons } from "@expo/vector-icons";
 import firebase from "../database/firebaseDB";
-
+import { FloatingAction } from "react-native-floating-action";
+import filter from "lodash.filter";
+import ActionButton from "react-native-action-button";
+import Icon from "react-native-vector-icons/Ionicons";
 const db = firebase.firestore().collection("shopInfo");
 
 function GroupBuyScreen({ navigation }) {
@@ -40,48 +45,75 @@ function GroupBuyScreen({ navigation }) {
   function renderItem({ item }) {
     return (
       <View style={styles.itemContainer}>
-        <Text style={{textAlign: "center"}}>{item.shopName}</Text>
+        <Text style={{ textAlign: "center" }}>{item.shopName}</Text>
         <View style={styles.container}>
           <ImageBackground source={{ uri: item.shopMenu }} style={styles.image}>
-            <TouchableOpacity 
-              style={styles.icon} 
-              onPress={() => deleteNote(item.id)}>
-              <Ionicons name="trash" size={20} color="#8B0000"/>
+            <TouchableOpacity
+              style={styles.icon}
+              onPress={() => deleteNote(item.id)}
+            >
+              <Ionicons name="trash" size={20} color="blue" />
             </TouchableOpacity>
             <View style={styles.body}>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.button}
                 text="Order Group buy "
                 onPress={() =>
                   navigation.navigate("AddGroupBuy", {
                     newShopName: item.shopName,
-                  })}
+                  })
+                }
               >
                 <Text style={styles.text}>Order Group buy</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate("ViewOrdersScreen")}>
-                <Text style={styles.text}>View Last orders</Text>
-              </TouchableOpacity>
-          </View>
+              </TouchableOpacity> */}
+            </View>
+            <View style={styles.overlaytext}>
+              <Text>Delivered by : "Weemeng"</Text>
+              <Text>Order by 6pm</Text>
+            </View>
+            <Button
+              text="Dabao"
+              rightContent={<Ionicons name="arrow-forward" size={20} />}
+              onPress={() =>
+                navigation.navigate("AddGroupBuy", {
+                  newShopName: item.shopName,
+                })
+              }
+              size="sm"
+            />
           </ImageBackground>
         </View>
+        <ActionButton buttonColor="#2e64e5">
+          <ActionButton.Item
+            buttonColor="#9b59b6"
+            title="View My Current Orders"
+            onPress={() => navigation.navigate("ViewOrdersScreen")}
+          >
+            <Icon name="camera-outline" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item
+            buttonColor="#3498db"
+            title="Dabao for others"
+            onPress={() => navigation.navigate("GroupBuyGroupScreen")}
+          >
+            <Icon name="md-images-outline" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+        </ActionButton>
       </View>
     );
   }
 
   return (
     <FlatGrid
-        itemDimension={"2"}
-        data={shopInfo}
-        style={styles.gridView}
-        // staticDimension={300}
-        // fixed
-        spacing={10}
-        renderItem={renderItem}
-        // keyExtractor={(item) => item.id.toString()}
-      />
+      itemDimension={"2"}
+      data={shopInfo}
+      style={styles.gridView}
+      // staticDimension={300}
+      // fixed
+      spacing={10}
+      renderItem={renderItem}
+      // keyExtractor={(item) => item.id.toString()}
+    />
   );
 }
 
@@ -89,19 +121,33 @@ export default function GroupBuyStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        options={{ headerTitle: "Join a Group Buy" }}
+        options={{
+          headerTitle: "Join a Group Buy",
+          headerTitleAlign: "center",
+        }}
         name="GroupBuyScreen"
         component={GroupBuyScreen}
       />
       <Stack.Screen
-        options={{ headerTitle: "Add Food Order" }}
+        options={{ headerTitle: "Add Food Order", headerTitleAlign: "center" }}
         name="AddGroupBuy"
         component={AddGroupBuy}
       />
       <Stack.Screen
-        options={{ headerTitle: "View Current Orders" }}
+        options={{
+          headerTitle: "View Current Orders",
+          headerTitleAlign: "center",
+        }}
         name="ViewOrdersScreen"
         component={ViewOrdersScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: "Start a new Group Buy ",
+          headerTitleAlign: "center",
+        }}
+        name="GroupBuyGroupScreen"
+        component={GroupBuyGroupScreen}
       />
     </Stack.Navigator>
   );
@@ -127,6 +173,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderWidth: 2,
   },
+  overlaytext: {
+    textAlign: "center",
+    backgroundColor: "white",
+    justifyContent: "center",
+    borderWidth: 1,
+  },
   body: {
     marginTop: 30,
     flex: 1,
@@ -138,19 +190,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemContainer: {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     borderRadius: 5,
     padding: 10,
     height: 200,
   },
   image: {
     flex: 1,
-    width: '100%',
+    width: "100%",
     resizeMode: "cover",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   icon: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     marginTop: -5,
   },
 });
