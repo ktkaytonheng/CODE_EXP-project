@@ -46,7 +46,7 @@ export default function TabNavigatorScreen() {
       >
         <Tab.Screen name="Home" component={StallsScreen} />
         <Tab.Screen name="Group buy" component={GroupBuyScreen} />
-        <Tab.Screen name="Listing" component={ListingScreen} />
+        {/* <Tab.Screen name="Listing" component={ListingScreen} /> */}
         <Tab.Screen name="Add place" component={AddScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
