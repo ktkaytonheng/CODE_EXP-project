@@ -102,7 +102,7 @@ function StallsScreen({ navigation }) {
             .collection("Shops")
             .onSnapshot((collection) => {
               const updatedShopInfo = collection.docs.map((doc) => doc.data());
-              setShop(updatedShopInfo);
+              setShops(updatedShopInfo);
             });
           }
           else{
@@ -113,7 +113,7 @@ function StallsScreen({ navigation }) {
             .where('shopName', '<=', text+ '\uf8ff')
             .onSnapshot((collection) => {
               const updatedShopInfo = collection.docs.map((doc) => doc.data());
-              setShop(updatedShopInfo);
+              setShops(updatedShopInfo);
             })
             //console.warn(text);
             }}
@@ -183,4 +183,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
