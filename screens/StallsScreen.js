@@ -7,13 +7,13 @@ import {
   ImageBackground,
   Button,
 } from "react-native";
-import { SectionGrid  } from "react-native-super-grid";
+import { SectionGrid } from "react-native-super-grid";
 import { createStackNavigator } from "@react-navigation/stack";
 import { LinearGradient } from "expo-linear-gradient";
 import AddListScreen from "./AddListScreen";
 import EditListDetailScreen from "./EditListDetailScreen";
 import firebase from "../database/firebase";
-import { SearchBar } from 'react-native-elements';
+import { SearchBar } from "react-native-elements";
 
 const firestore = firebase.firestore();
 
@@ -30,7 +30,7 @@ function StallsScreen({ navigation }) {
   });
 
   const [shops, setShops] = React.useState([]);
-  const [text , setText] = React.useState("");
+  const [text, setText] = React.useState("");
 
   useEffect(() => {
     const unsubscribe = firebase
@@ -62,7 +62,7 @@ function StallsScreen({ navigation }) {
               source={{ uri: item.shopMenu }}
               style={styles.image}
             >
-              <Text style={styles.itemCode}>{item.shopLocation}</Text>
+              {/* <Text style={styles.itemCode}>{item.shopLocation}</Text> */}
             </ImageBackground>
           </View>
         </TouchableOpacity>
@@ -76,52 +76,59 @@ function StallsScreen({ navigation }) {
       style={styles.container}
     >
       <SectionGrid
-      itemDimension={130}
-      // staticDimension={300}
-      // fixed
-      // spacing={20}
-      sections={[
-        {
-          title: 'Title1',
-          data: shops.slice(0, 10000),
-        },
-      ]}
-      style={styles.gridView}
-      renderItem={renderItem}
-      renderSectionHeader={({ section }) => (
-        <SearchBar
-        inputStyle={{backgroundColor: 'white'}}
-        containerStyle={{backgroundColor: 'white', borderWidth: 1, borderRadius: 10}}
-        placeholderTextColor={'#g5g5g5'}
-        placeholder="Search"
-        onChangeText={ (text) => {
-          setText(text);
-          if(text == ""){
-            firebase
-            .firestore()
-            .collection("Shops")
-            .onSnapshot((collection) => {
-              const updatedShopInfo = collection.docs.map((doc) => doc.data());
-              setShops(updatedShopInfo);
-            });
-          }
-          else{
-            const unsubscribe = firebase
-            .firestore()
-            .collection("Shops")
-            .where('shopName', '>=', text.toUpperCase())
-            .where('shopName', '<=', text+ '\uf8ff')
-            .onSnapshot((collection) => {
-              const updatedShopInfo = collection.docs.map((doc) => doc.data());
-              setShops(updatedShopInfo);
-            })
-            //console.warn(text);
+        itemDimension={130}
+        // staticDimension={300}
+        // fixed
+        // spacing={20}
+        sections={[
+          {
+            title: "Title1",
+            data: shops.slice(0, 10000),
+          },
+        ]}
+        style={styles.gridView}
+        renderItem={renderItem}
+        renderSectionHeader={({ section }) => (
+          <SearchBar
+            inputStyle={{ backgroundColor: "white" }}
+            containerStyle={{
+              backgroundColor: "white",
+              borderWidth: 1,
+              borderRadius: 10,
             }}
-          }
-        value={text}
-        />
-      )}
-    />
+            placeholderTextColor={"#g5g5g5"}
+            placeholder="Search"
+            onChangeText={(text) => {
+              setText(text);
+              if (text == "") {
+                firebase
+                  .firestore()
+                  .collection("Shops")
+                  .onSnapshot((collection) => {
+                    const updatedShopInfo = collection.docs.map((doc) =>
+                      doc.data()
+                    );
+                    setShops(updatedShopInfo);
+                  });
+              } else {
+                const unsubscribe = firebase
+                  .firestore()
+                  .collection("Shops")
+                  .where("shopName", ">=", text.toUpperCase())
+                  .where("shopName", "<=", text + "\uf8ff")
+                  .onSnapshot((collection) => {
+                    const updatedShopInfo = collection.docs.map((doc) =>
+                      doc.data()
+                    );
+                    setShops(updatedShopInfo);
+                  });
+                //console.warn(text);
+              }
+            }}
+            value={text}
+          />
+        )}
+      />
     </LinearGradient>
   );
 }
@@ -176,10 +183,10 @@ const styles = StyleSheet.create({
   sectionHeader: {
     flex: 1,
     fontSize: 15,
-    fontWeight: '600',
-    alignItems: 'center',
-    backgroundColor: '#636e72',
-    color: 'white',
+    fontWeight: "600",
+    alignItems: "center",
+    backgroundColor: "#636e72",
+    color: "white",
     padding: 10,
   },
 });

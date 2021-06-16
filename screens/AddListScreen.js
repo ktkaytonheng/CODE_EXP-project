@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
-  Alert
+  Alert,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import firebase from "../database/firebase";
@@ -62,74 +62,70 @@ export default function AddListScreen({ navigation, route }) {
   }, [initialized]);
 
   function AddOrderToDB() {
-      firestore
-        .collection("Orders")
-        .add({
-          currentPax: 0,
-          maxPax: paxes,
-          pickerID: userID,
-          shopID: shopID,
-          time: timing,
-        })
-        .then((docRef) => {
-          console.log(docRef.id);
-          firestore
-            .collection("Orders")
-            .doc(docRef.id)
-            .collection("Buyers")
-            .doc("dummy")
-            .set({
-              1: "1",
-            });
-        });
+    firestore
+      .collection("Orders")
+      .add({
+        currentPax: 0,
+        maxPax: paxes,
+        pickerID: userID,
+        shopID: shopID,
+        time: timing,
+      })
+      .then((docRef) => {
+        console.log(docRef.id);
+        firestore
+          .collection("Orders")
+          .doc(docRef.id)
+          .collection("Buyers")
+          .doc("dummy")
+          .set({
+            1: "1",
+          });
+      });
 
-      alert("Order posted successfully!");
-      navigation.goBack();
+    alert("Order posted successfully!");
+    navigation.goBack();
   }
 
   onDeleteBTN = () => {
     firestore
-        .collection("Orders")
-        .add({
-          currentPax: 0,
-          maxPax: parseInt(paxes),
-          pickerID: userID,
-          pickerName: userInfo.name,
-          // pickerPic: userInfo.image,
-          shopMenu: shopMenu,
-          shopLocation: shopLocation,
-          shopName: shopName,
-          time: timing.toLocaleString('en-GB', { timeZone: 'UTC' }),
-        })
-        .then((docRef) => {
-          console.log(docRef.id);
-          firestore
-            .collection("Orders")
-            .doc(docRef.id)
-            .collection("Buyers")
-            .doc("dummy")
-            .set({
-              1: "1",
-            });
-        });
+      .collection("Orders")
+      .add({
+        currentPax: 0,
+        maxPax: parseInt(paxes),
+        pickerID: userID,
+        pickerName: userInfo.name,
+        // pickerPic: userInfo.image,
+        shopMenu: shopMenu,
+        shopLocation: shopLocation,
+        shopName: shopName,
+        time: timing.toLocaleString("en-GB", { timeZone: "UTC" }),
+      })
+      .then((docRef) => {
+        console.log(docRef.id);
+        firestore
+          .collection("Orders")
+          .doc(docRef.id)
+          .collection("Buyers")
+          .doc("dummy")
+          .set({
+            1: "1",
+          });
+      });
 
-      alert("Order posted successfully!");
-      navigation.goBack();
+    alert("Order posted successfully!");
+    navigation.goBack();
   };
 
   function increment() {
-    Alert.alert(
-      "Confirmation",
-      "Are the details correct?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        {text: 'OK', onPress: this.onDeleteBTN},
-      ]
-    );
+    Alert.alert("Confirmation", "Are the details correct?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "OK", onPress: this.onDeleteBTN },
+    ]);
   }
 
   return (
@@ -151,7 +147,7 @@ export default function AddListScreen({ navigation, route }) {
         <Text style={styles.text}>Enter time</Text>
         <Button
           style={styles.textArea}
-          title={timing.toLocaleString('en-GB', { timeZone: 'UTC' }).toString()}
+          title={timing.toLocaleString("en-GB", { timeZone: "UTC" }).toString()}
           onPress={showDatePicker}
         />
         <DateTimePickerModal
