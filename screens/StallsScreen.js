@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, ImageBackground, Button } from 'react-native';
-import { FlatGrid } from 'react-native-super-grid';
+import { SectionGrid } from 'react-native-super-grid';
 import { createStackNavigator } from '@react-navigation/stack';
 import AddListScreen from './AddListScreen';
 import EditListDetailScreen from "./EditListDetailScreen";
+import { SearchBar } from 'react-native-elements';
+
 
 import firebase from "../database/firebaseDB";
 
 const db = firebase.firestore().collection("shopInfo");
 
-function StallsScreen({ navigation }) {
+function StallsScreen ({ navigation }) {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => <Button onPress={() => navigation.navigate("My listing")} title="My listings" />,
@@ -17,6 +19,7 @@ function StallsScreen({ navigation }) {
   });
 
   const [shopInfo, setShopInfo] = React.useState([]);
+  const [text , setText] = React.useState("");
 
   useEffect(() => {
     const unsubscribe = firebase
@@ -31,6 +34,10 @@ function StallsScreen({ navigation }) {
       unsubscribe();
     };
   }, []);
+
+  updateSearch = (search) => {
+    this.setState({ search });
+  };
 
   function renderItem({ item }) {
     return (
@@ -51,15 +58,53 @@ function StallsScreen({ navigation }) {
   }
 
   return (
-      <FlatGrid
-        itemDimension={130}
-        data={shopInfo}
-        style={styles.gridView}
-        // staticDimension={300}
-        // fixed
-        spacing={10}
-        renderItem={renderItem}
-      />
+    <SectionGrid
+      itemDimension={130}
+      // staticDimension={300}
+      // fixed
+      // spacing={20}
+      sections={[
+        {
+          title: 'Title1',
+          data: shopInfo.slice(0, 10000),
+        },
+      ]}
+      style={styles.gridView}
+      renderItem={renderItem}
+      renderSectionHeader={({ section }) => (
+        <SearchBar
+        inputStyle={{backgroundColor: 'white'}}
+        containerStyle={{backgroundColor: 'white', borderWidth: 1, borderRadius: 10}}
+        placeholderTextColor={'#g5g5g5'}
+        placeholder="Search"
+        onChangeText={ (text) => {
+          setText(text);
+          if(text == ""){
+            firebase
+            .firestore()
+            .collection("shopInfo")
+            .onSnapshot((collection) => {
+              const updatedShopInfo = collection.docs.map((doc) => doc.data());
+              setShopInfo(updatedShopInfo);
+            });
+          }
+          else{
+            const unsubscribe = firebase
+            .firestore()
+            .collection("shopInfo")
+            .where('shopName', '>=', text.toUpperCase())
+            .where('shopName', '<=', text+ '\uf8ff')
+            .onSnapshot((collection) => {
+              const updatedShopInfo = collection.docs.map((doc) => doc.data());
+              setShopInfo(updatedShopInfo);
+            })
+            //console.warn(text);
+            }}
+          }
+        value={text}
+        />
+      )}
+    />
   );
 }
 
@@ -104,5 +149,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 12,
     color: '#fff',
+  },
+  sectionHeader: {
+    flex: 1,
+    fontSize: 15,
+    fontWeight: '600',
+    alignItems: 'center',
+    backgroundColor: '#636e72',
+    color: 'white',
+    padding: 10,
   },
 });
