@@ -9,7 +9,6 @@ import {
   TextInput,
 } from "react-native";
 import { Button } from "react-native-rapi-ui";
-import { LinearGradient } from "expo-linear-gradient";
 import { FlatGrid } from "react-native-super-grid";
 import AddGroupBuy from "./AddGroupBuy";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -18,7 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import firebase from "../database/firebase";
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
-
+import { LinearGradient } from "expo-linear-gradient";
 const Stack = createStackNavigator();
 const firestore = firebase.firestore();
 
@@ -50,43 +49,32 @@ function GroupBuyScreen({ navigation }) {
   function renderItem({ item }) {
     return (
       <View style={styles.itemContainer}>
-        <Text style={{ textAlign: "center" }}>{item.shopID}</Text>
+        <Text style={{ textAlign: "center" }}>{item.shopName}</Text>
         <View style={styles.container}>
-          {/* <ImageBackground source={{ uri: item.shopMenu }} style={styles.image}> */}
-          <TouchableOpacity
-            style={styles.icon}
-            onPress={() => deleteNote(item.id)}
-          >
-            <Ionicons name="trash" size={20} color="blue" />
-          </TouchableOpacity>
-          <View style={styles.body}>
-            {/* <TouchableOpacity
-                style={styles.button}
-                text="Order Group buy "
-                onPress={() =>
-                  navigation.navigate("AddGroupBuy", {
-                    newShopName: item.shopName,
-                  })
-                }
-              >
-                <Text style={styles.text}>Order Group buy</Text>
-              </TouchableOpacity> */}
-          </View>
-          <View style={styles.overlaytext}>
-            <Text>Delivered by : "Weemeng"</Text>
-            <Text>Order by 6pm</Text>
-          </View>
-          <Button
-            text="Dabao"
-            rightContent={<Ionicons name="arrow-forward" size={20} />}
-            onPress={() =>
-              navigation.navigate("AddGroupBuy", {
-                newShopName: item.shopID,
-              })
-            }
-            size="sm"
-          />
-          {/* </ImageBackground> */}
+          <ImageBackground source={{ uri: item.shopMenu }} style={styles.image}>
+            <TouchableOpacity
+              style={styles.icon}
+              onPress={() => deleteNote(item.id)}
+            ></TouchableOpacity>
+            <View style={styles.body}></View>
+            <View style={styles.overlaytext}>
+              <Text>Delivered by : {item.pickerName}</Text>
+              <Text>Order by {item.time}</Text>
+            </View>
+            <Button
+              text="Dabao"
+              rightContent={<Ionicons name="arrow-forward" size={20} />}
+              onPress={() =>
+                navigation.navigate("AddGroupBuy", {
+                  newShopName: item.shopName,
+                  orderID: item.orderID,
+                  location: item.shopLocation,
+                  menu: item.shopMenu,
+                })
+              }
+              size="sm"
+            />
+          </ImageBackground>
         </View>
       </View>
     );
@@ -97,18 +85,9 @@ function GroupBuyScreen({ navigation }) {
       colors={["#f9c449", "#e8a49c", "#e8a49c"]}
       style={styles.container}
     >
-      <FlatGrid
-        itemDimension={"2"}
-        data={orders}
-        style={styles.gridView}
-        // staticDimension={300}
-        // fixed
-        spacing={10}
-        renderItem={renderItem}
-        // keyExtractor={(item) => item.id.toString()}
-      />
+      <FlatList data={orders} renderItem={renderItem} />
 
-      <ActionButton buttonColor="#2e64e5">
+      {/* <ActionButton buttonColor="#2e64e5">
         <ActionButton.Item
           buttonColor="#9b59b6"
           title="View My Current Orders"
@@ -116,14 +95,7 @@ function GroupBuyScreen({ navigation }) {
         >
           <Icon name="camera-outline" style={styles.actionButtonIcon} />
         </ActionButton.Item>
-        {/* <ActionButton.Item
-          buttonColor="#3498db"
-          title="Dabao for others"
-          onPress={() => navigation.navigate("GroupBuyGroupScreen")}
-        >
-          <Icon name="md-images-outline" style={styles.actionButtonIcon} />
-        </ActionButton.Item> */}
-      </ActionButton>
+      </ActionButton> */}
     </LinearGradient>
   );
 }
@@ -167,9 +139,10 @@ export default function GroupBuyStack() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
+  container2: {},
   button: {
     margin: 5,
     backgroundColor: "blue",

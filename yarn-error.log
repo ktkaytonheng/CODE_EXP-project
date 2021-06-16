@@ -1,8 +1,12 @@
 Arguments: 
+<<<<<<< HEAD
   C:\Program Files\nodejs\node.exe C:\Users\maste\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js start
+=======
+  /opt/homebrew/Cellar/node/16.3.0/bin/node /opt/homebrew/Cellar/yarn/1.22.10/libexec/bin/yarn.js install
+>>>>>>> 03aa43449136e9ac174d80e4a1c117d894378537
 
 PATH: 
-  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\maste\AppData\Local\Programs\Python\Python39;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Users\maste\AppData\Local\Microsoft\WindowsApps;C:\Users\maste\AppData\Roaming\npm;C:\Users\maste\AppData\Local\Programs\Microsoft VS Code\bin
+  /Users/kayton/opt/anaconda3/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands
 
 Yarn version: 
   1.22.10
@@ -11,15 +15,24 @@ Node version:
   16.3.0
 
 Platform: 
-  win32 x64
+  darwin arm64
 
 Trace: 
+<<<<<<< HEAD
   SyntaxError: E:\Hackaton App\CODE_EXP-project\package.json: Unexpected token < in JSON at position 278
       at JSON.parse (<anonymous>)
       at C:\Users\maste\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1625:59
       at Generator.next (<anonymous>)
       at step (C:\Users\maste\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:310:30)
       at C:\Users\maste\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:321:13
+=======
+  SyntaxError: /Users/kayton/Downloads/Work/KT/Projects/Hackathon/CODE_EXP/CODE_EXP-project/package.json: Unexpected token < in JSON at position 278
+      at JSON.parse (<anonymous>)
+      at /opt/homebrew/Cellar/yarn/1.22.10/libexec/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/opt/homebrew/Cellar/yarn/1.22.10/libexec/lib/cli.js:310:30)
+      at /opt/homebrew/Cellar/yarn/1.22.10/libexec/lib/cli.js:321:13
+>>>>>>> 03aa43449136e9ac174d80e4a1c117d894378537
 
 npm manifest: 
   {
